@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.insightcentre.coach.HomeActivity">
+    <item
+        android:id="@+id/action_calendar"
+        android:icon="@drawable/ic_date_range_white_24dp"
+        android:title="@string/exercise_calendar"
+        android:orderInCategory="1"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_history"
+        android:icon="@drawable/ic_description_white_24dp"
+        android:title="@string/exercise_history"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom" />
+</menu>

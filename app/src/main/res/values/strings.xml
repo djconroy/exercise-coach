@@ -1,0 +1,143 @@
+<resources>
+    <string name="app_name">Insight Coach</string>
+    <string name="exercise_history">Exercise History</string>
+    <string name="exercise_calendar">Exercise Calendar</string>
+
+    <string name="fab_action_description">Record a new extra session</string>
+    <string name="exercise_session">Exercise session</string>
+
+    <string name="this_is_too_big">This is too big</string>
+    <string name="seconds_overflow_error_message">Enter less than 60</string>
+    <string name="empty_exercises_list">No exercises are scheduled for %s</string>
+    <string name="empty_exercises_list_past">No exercises were scheduled for %s</string>
+
+    <string name="start_date_confirmation">Chosen Start Date: %s</string>
+    <string name="go_back_to_the_previous_screen">Go back to the previous screen</string>
+
+    <string name="discard_changes">Discard changes?</string>
+    <string name="discard">DISCARD</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="save">SAVE</string>
+
+    <string-array name="rpe_values">
+        <item>"  6   No exertion"</item>
+        <item>"  7   Extremely light"</item>
+        <item>"  8"</item>
+        <item>"  9   Very light"</item>
+        <item>"10"</item>
+        <item>"11   Light"</item>
+        <item>"12"</item>
+        <item>"13   Somewhat hard"</item>
+        <item>"14"</item>
+        <item>"15   Hard"</item>
+        <item>"16"</item>
+        <item>"17   Very hard"</item>
+        <item>"18"</item>
+        <item>"19   Extremely hard"</item>
+        <item>"20   Maximum exertion"</item>
+    </string-array>
+
+    <string name="minutes_is_required">Minutes is required</string>
+    <string name="seconds_is_required">Seconds is required</string>
+
+    <string name="choose_start_date">Choose Program Start Date</string>
+
+    <string name="dates_key">Dates Key</string>
+    <string name="start_date">Start Date</string>
+    <string name="start_date_in_dst">Start Date in DST</string>
+    <string name="end_date">End Date</string>
+
+    <string name="level_key">Level Key</string>
+    <string name="current_level">Current Level</string>
+    <string name="previous_level">Previous Level</string>
+
+    <string name="statistics_key">Statistics Key</string>
+    <string name="current_success_rate">Current Success Rate</string>
+
+    <string name="week_and_level">"Week %1$d     Level %2$d"</string>
+    <string name="day_and_date">"Day %1$d     %2$s"</string>
+    <string name="date_and_level">"%1$s     Level %2$d"</string>
+
+    <string name="session">Session %1$d</string>
+    <string name="extra_session">Extra Session %1$d</string>
+
+    <string-array name="exercise_types">
+        <item>Step ups</item>
+        <item>Walk</item>
+    </string-array>
+
+    <string name="step_ups">Step ups</string>
+    <string name="walk">Walk</string>
+
+    <string name="target">Target</string>
+    <string name="rpe">RPE</string>
+    <string name="rpe_colon">RPE:</string>
+    <string name="type">Type:</string>
+    <string name="target_rpe">Target RPE:</string>
+    <string name="target_time">Target time:</string>
+    <string name="a11y_type">Type: %1$s</string>
+    <string name="a11y_time">Time: %1$d minutes %2$d seconds</string>
+    <string name="a11y_time_and_target_time">Time: %1$d minutes %2$d seconds
+        Target Time: %3$d minutes %4$d seconds</string>
+    <string name="a11y_rpe">RPE: %1$d Target RPE: %2$d</string>
+
+    <string name="minutes">Minutes</string>
+    <string name="mins">mins</string>
+    <string name="m">m</string>
+    <string name="seconds">Seconds</string>
+    <string name="secs">secs</string>
+    <string name="s">s</string>
+
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="yesterday">Yesterday</string>
+
+    <string name="exercise_prescription">Exercise Prescription</string>
+    <string name="normal_view_morning_notification_text">
+        View today\'s prescribed exercises
+    </string>
+    <string name="first_prescription_message">
+        Can you complete all of these sessions today?
+    </string>
+    <string name="message_on_complete_success">
+        Congratulations! You completed all of your last exercise prescription. Can you complete
+        all of these sessions today?
+    </string>
+    <string name="message_on_partial_success">
+        Well done! You managed to complete some of your last exercise prescription. Can you
+        improve on that by completing all of these sessions today?
+    </string>
+    <string name="message_on_attempt">
+        Hard luck! You weren\'t able to complete any of your last exercise prescription, but you
+        made a good effort! Can you improve on that by completing some or all of these today?
+    </string>
+    <string name="message_on_failure">
+        I notice you did not start any of your last prescribed exercise sessions. Can you improve
+        on that by attempting or completing some or all of these today?
+    </string>
+
+    <string name="reminder">Reminder</string>
+    <string name="normal_view_reminder_message">
+        Record today\'s exercise sessions
+    </string>
+    <string name="big_view_reminder_message">
+        Good evening. Have you remembered to record all your exercise sessions today?
+    </string>
+
+    <string name="program_progress">Program Progress</string>
+    <string name="message_on_progress">
+        Congrats, you progressed to level %1$d!
+    </string>
+    <string name="big_view_message_on_progress">
+        Congratulations, you completed %1$d%% of exercise sessions in level %2$d. You are now
+        progressing to level %3$d! Good luck!
+    </string>
+    <string name="message_on_no_progress">
+        Hard luck, your next level is %1$d
+    </string>
+    <string name="big_view_message_on_no_progress">
+        Hard luck, you completed %1$d%% of exercise sessions in level %2$d. Can you improve on
+        that next week?
+    </string>
+</resources>

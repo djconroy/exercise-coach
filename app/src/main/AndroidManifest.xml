@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.insightcentre.coach">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".HomeActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ChooseStartDateActivity" />
+        <activity android:name=".ExerciseSessionActivity" />
+        <activity
+            android:name=".HistoryActivity"
+            android:parentActivityName=".HomeActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+        </activity>
+        <activity
+            android:name=".CalendarActivity"
+            android:parentActivityName=".HomeActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+        </activity>
+        <activity
+            android:name=".DateActivity"
+            android:parentActivityName=".CalendarActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CalendarActivity" />
+        </activity>
+
+        <provider
+            android:name=".data.ExerciseProgramProvider"
+            android:authorities="org.insightcentre.coach"
+            android:exported="false" />
+
+        <service
+            android:name=".StorePrescribedExercisesService"
+            android:exported="false" />
+        <service
+            android:name=".ScheduleExercisesService"
+            android:exported="false" />
+        <service
+            android:name=".ChooseNextLevelService"
+            android:exported="false" />
+        <service
+            android:name=".notify.MorningNotificationService"
+            android:exported="false" />
+        <service
+            android:name=".notify.EveningNotificationService"
+            android:exported="false" />
+        <service
+            android:name=".notify.WeeklyNotificationService"
+            android:exported="false" />
+        <service
+            android:name=".SaveDataService"
+            android:exported="false" />
+
+        <receiver
+            android:name=".alarms.MorningAlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name=".alarms.EveningAlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name=".alarms.ExerciseSchedulerAlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name=".alarms.WeeklyAlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name=".alarms.DeviceBootAndTimeZoneChangeReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

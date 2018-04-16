@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/week_subtitle"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_subtitle_height"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/list_item_subtitle_left_padding"
+    android:paddingStart="@dimen/list_item_subtitle_left_padding"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:textColor="@color/colorPrimaryDark"
+    android:textAppearance="@style/TextAppearance.AppCompat.Title" />

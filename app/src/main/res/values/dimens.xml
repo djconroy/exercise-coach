@@ -1,0 +1,27 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="text_horizontal_margin">8dp</dimen>
+    <dimen name="toolbar_end_padding">8dp</dimen>
+    <dimen name="list_item_divider_vertical_margin">2dp</dimen>
+    <dimen name="list_item_textview_vertical_margin">4dp</dimen>
+    <dimen name="list_item_exercise_description_width">58dp</dimen>
+    <dimen name="list_item_exercise_description_top_margin">8dp</dimen>
+    <dimen name="list_item_vertical_padding">8dp</dimen>
+    <dimen name="list_item_middle_space">8dp</dimen>
+    <dimen name="list_item_subtitle_height">48dp</dimen>
+    <dimen name="list_item_subtitle_left_padding">72dp</dimen>
+    <dimen name="list_item_home_subtitle_left_padding">82dp</dimen>
+    <dimen name="list_item_session_top_padding">8dp</dimen>
+    <dimen name="list_item_session_bottom_padding">10dp</dimen>
+    <dimen name="list_item_session_middle_space">16dp</dimen>
+    <dimen name="list_icon">40dp</dimen>
+    <dimen name="list_icon_top_margin">12dp</dimen>
+    <dimen name="exercise_session_form_row_height">48dp</dimen>
+    <dimen name="custom_dialog_title_horizontal_padding">24dp</dimen>
+    <dimen name="custom_dialog_title_vertical_padding">16dp</dimen>
+    <dimen name="rpe_min_width">20dp</dimen>
+</resources>

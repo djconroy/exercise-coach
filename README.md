@@ -1,1 +1,2 @@
 # Insight Coach
+Insight Coach is an Android app I created as an intern at the Insight Centre for Data Analytics in UCD. Insight Coach implements an adaptive coaching system which complements an exercise program for people with type 2 diabetes. The app was created using Material Design. Slides presenting screenshots of the app are available on [my LinkedIn profile](https://www.linkedin.com/in/daniel-conroy/).

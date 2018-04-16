@@ -1,2 +1,1 @@
-# exercise-coach
-Adaptive coaching app for diabetics
+# Insight Coach

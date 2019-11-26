@@ -84,7 +84,7 @@ public class AlarmScheduler {
 
         Intent weeklyAlarmIntent = new Intent(context, WeeklyAlarmReceiver.class);
         PendingIntent weeklyAlarmPendingIntent =
-		    PendingIntent.getBroadcast(context, 0, weeklyAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent.getBroadcast(context, 0, weeklyAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 

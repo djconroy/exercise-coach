@@ -283,7 +283,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-		return mListItemToDataMap == null ? 0 : mListItemToDataMap.size();
+        return mListItemToDataMap == null ? 0 : mListItemToDataMap.size();
     }
 
     public void swapCursor(Cursor newCursor) {

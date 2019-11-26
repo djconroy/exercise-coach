@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity
 
         // Add dividers between the items of the recycler view
         DividerItemDecoration dividerItemDecoration =
-		    new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
+            new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -180,7 +180,7 @@ public class HomeActivity extends AppCompatActivity
                               Snackbar.LENGTH_LONG).show();
 
                 Intent scheduleExercisesIntent =
-				    new Intent(this, ScheduleExercisesService.class).putExtra(ScheduleExercisesService.EXTRA_START_DATE, startDate);
+                    new Intent(this, ScheduleExercisesService.class).putExtra(ScheduleExercisesService.EXTRA_START_DATE, startDate);
                 startService(scheduleExercisesIntent);
 
                 findViewById(R.id.activity_home).postDelayed(new Runnable() {

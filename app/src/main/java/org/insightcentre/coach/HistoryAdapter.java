@@ -128,8 +128,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 mCursor.moveToPosition(mListItemToDataMap.get(position + 2));
                 WeekSubtitleViewHolder weekSubtitleViewHolder = (WeekSubtitleViewHolder) holder;
                 weekSubtitleViewHolder.mSubtitleView.setText(mContext.getString(R.string.week_and_level,
-				    1 + ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) - mStartDate) / DateUtils.WEEK_IN_MILLIS),
-					mCursor.getInt(HomeActivity.COL_EXERCISES_LEVEL)));
+                    1 + ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) - mStartDate) / DateUtils.WEEK_IN_MILLIS),
+                    mCursor.getInt(HomeActivity.COL_EXERCISES_LEVEL)));
                 break;
             case TYPE_DAY_SUBTITLE:
                 mCursor.moveToPosition(mListItemToDataMap.get(position + 1));
@@ -137,7 +137,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 int week = (int) ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) - mStartDate) / DateUtils.WEEK_IN_MILLIS);
                 daySubtitleViewHolder.mSubtitleView.setText(mContext.getString(R.string.day_and_date,
                     1 + ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) - mStartDate - (week * DateUtils.WEEK_IN_MILLIS))
-					     / DateUtils.DAY_IN_MILLIS),
+                         / DateUtils.DAY_IN_MILLIS),
                     Utility.getFriendlyDayString(mContext, mCursor.getLong(HomeActivity.COL_EXERCISES_DATE))));
                 break;
             case TYPE_EXERCISE:
@@ -250,7 +250,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 String timeDescription;
                 if (prescribed) {
                     timeDescription = mContext.getString(R.string.a11y_time_and_target_time,
-					    actualMins, actualSecs, targetMins, targetSecs);
+                        actualMins, actualSecs, targetMins, targetSecs);
                 } else {
                     timeDescription = mContext.getString(R.string.a11y_time, actualMins, actualSecs);
                 }
@@ -301,7 +301,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-		return mListItemToDataMap == null ? 0 : mListItemToDataMap.size();
+        return mListItemToDataMap == null ? 0 : mListItemToDataMap.size();
     }
 
     public void swapCursor(Cursor newCursor) {

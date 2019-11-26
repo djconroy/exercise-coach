@@ -38,10 +38,9 @@ public class Utility {
     }
 
     public static void adjustForDST(Context context, Calendar calendar) {
-        SharedPreferences datesSharedPrefs = context.getSharedPreferences(
-                context.getString(R.string.dates_key), Context.MODE_PRIVATE);
-        boolean startDateInDaylightTime =
-                datesSharedPrefs.getBoolean(context.getString(R.string.start_date_in_dst), false);
+        SharedPreferences datesSharedPrefs =
+            context.getSharedPreferences(context.getString(R.string.dates_key), Context.MODE_PRIVATE);
+        boolean startDateInDaylightTime = datesSharedPrefs.getBoolean(context.getString(R.string.start_date_in_dst), false);
         boolean inDaylightTime = inDaylightTime(calendar);
 
         if (startDateInDaylightTime && !inDaylightTime) {
@@ -58,6 +57,7 @@ public class Utility {
         int minute = date.get(Calendar.MINUTE);
         int second = date.get(Calendar.SECOND);
         int millisecond = date.get(Calendar.MILLISECOND);
+
         if (hourOfDay != 0 || minute != 0 || second != 0 || millisecond != 0) {
             if (inDaylightTime(date)) {
                 date.add(Calendar.MILLISECOND, -timeZoneAtHome().getDSTSavings());
@@ -101,6 +101,7 @@ public class Utility {
             int minute = date.get(Calendar.MINUTE);
             int second = date.get(Calendar.SECOND);
             int millisecond = date.get(Calendar.MILLISECOND);
+
             if (hourOfDay != 0 || minute != 0 || second != 0 || millisecond != 0) {
                 if (inDaylightTime(date)) {
                     date.add(Calendar.MILLISECOND, -timeZoneAtHome().getDSTSavings());
@@ -110,11 +111,9 @@ public class Utility {
             }
 
             try {
-                SimpleDateFormat simpleDateFormat =
-                        (SimpleDateFormat) DateFormat.getDateInstance();
+                SimpleDateFormat simpleDateFormat = (SimpleDateFormat) DateFormat.getDateInstance();
 
-                if (tomorrow < dateInMillis
-                        && dateInMillis < today.getTimeInMillis() + DateUtils.WEEK_IN_MILLIS) {
+                if (tomorrow < dateInMillis && dateInMillis < today.getTimeInMillis() + DateUtils.WEEK_IN_MILLIS) {
                     simpleDateFormat.applyPattern("EEEE");
                 } else {
                     simpleDateFormat.applyPattern("EEE, d MMM");

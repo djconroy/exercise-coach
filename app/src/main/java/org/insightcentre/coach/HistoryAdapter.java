@@ -68,8 +68,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public HistoryAdapter(Context context, Cursor cursor) {
         mCursor = cursor;
         mContext = context;
-        SharedPreferences datesSharedPrefs = mContext.getSharedPreferences(
-                mContext.getString(R.string.dates_key), Context.MODE_PRIVATE);
+        SharedPreferences datesSharedPrefs =
+            mContext.getSharedPreferences(mContext.getString(R.string.dates_key), Context.MODE_PRIVATE);
         mStartDate = datesSharedPrefs.getLong(mContext.getString(R.string.start_date), 0);
         setup();
     }
@@ -82,8 +82,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         mCursor.moveToFirst();
         do {
-            int temp = (int) ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) - mStartDate) /
-                                DateUtils.WEEK_IN_MILLIS);
+            int temp = (int) ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) - mStartDate) / DateUtils.WEEK_IN_MILLIS);
+
             if (temp > week) {
                 week = temp;
                 mListItemToDataMap.add(TYPE_WEEK_SUBTITLE);
@@ -102,18 +102,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             View view;
             switch (viewType) {
                 case TYPE_WEEK_SUBTITLE:
-                    view = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.list_item_week_subtitle, parent, false);
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_week_subtitle, parent, false);
                     view.setFocusable(true);
                     return new WeekSubtitleViewHolder(view);
                 case TYPE_DAY_SUBTITLE:
-                    view = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.list_item_day_subtitle, parent, false);
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_day_subtitle, parent, false);
                     view.setFocusable(true);
                     return new DaySubtitleViewHolder(view);
                 case TYPE_EXERCISE:
-                    view = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.list_item_session, parent, false);
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_session, parent, false);
                     view.setFocusable(true);
                     return new ExerciseViewHolder(view);
                 default:
@@ -130,24 +127,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case TYPE_WEEK_SUBTITLE:
                 mCursor.moveToPosition(mListItemToDataMap.get(position + 2));
                 WeekSubtitleViewHolder weekSubtitleViewHolder = (WeekSubtitleViewHolder) holder;
-                weekSubtitleViewHolder.mSubtitleView.setText(
-                        mContext.getString(R.string.week_and_level,
-                                ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) - mStartDate) /
-                                        DateUtils.WEEK_IN_MILLIS) + 1,
-                                mCursor.getInt(HomeActivity.COL_EXERCISES_LEVEL)));
+                weekSubtitleViewHolder.mSubtitleView.setText(mContext.getString(R.string.week_and_level,
+				    1 + ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) - mStartDate) / DateUtils.WEEK_IN_MILLIS),
+					mCursor.getInt(HomeActivity.COL_EXERCISES_LEVEL)));
                 break;
             case TYPE_DAY_SUBTITLE:
                 mCursor.moveToPosition(mListItemToDataMap.get(position + 1));
                 DaySubtitleViewHolder daySubtitleViewHolder = (DaySubtitleViewHolder) holder;
-                int week = (int) ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) - mStartDate) /
-                                        DateUtils.WEEK_IN_MILLIS);
-                daySubtitleViewHolder.mSubtitleView.setText(
-                        mContext.getString(R.string.day_and_date,
-                                1 + ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) -
-                                        mStartDate - (week * DateUtils.WEEK_IN_MILLIS)) /
-                                        DateUtils.DAY_IN_MILLIS),
-                                Utility.getFriendlyDayString(mContext,
-                                        mCursor.getLong(HomeActivity.COL_EXERCISES_DATE))));
+                int week = (int) ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) - mStartDate) / DateUtils.WEEK_IN_MILLIS);
+                daySubtitleViewHolder.mSubtitleView.setText(mContext.getString(R.string.day_and_date,
+                    1 + ((mCursor.getLong(HomeActivity.COL_EXERCISES_DATE) - mStartDate - (week * DateUtils.WEEK_IN_MILLIS))
+					     / DateUtils.DAY_IN_MILLIS),
+                    Utility.getFriendlyDayString(mContext, mCursor.getLong(HomeActivity.COL_EXERCISES_DATE))));
                 break;
             case TYPE_EXERCISE:
                 mCursor.moveToPosition(mListItemToDataMap.get(position));
@@ -178,14 +169,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 SpannableStringBuilder sessionAndTypeText = new SpannableStringBuilder();
                 if (prescribed) {
                     sessionAndTypeText.append(mContext.getString(R.string.session,
-                            mCursor.getInt(HomeActivity.COL_EXERCISES_SESSION)));
+                        mCursor.getInt(HomeActivity.COL_EXERCISES_SESSION)));
                 } else {
                     sessionAndTypeText.append(mContext.getString(R.string.extra_session,
-                            mCursor.getInt(HomeActivity.COL_EXERCISES_SESSION)));
+                        mCursor.getInt(HomeActivity.COL_EXERCISES_SESSION)));
                 }
-                sessionAndTypeText.setSpan(new ForegroundColorSpan(
-                                ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                        0, sessionAndTypeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sessionAndTypeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                    0, sessionAndTypeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 switch (mCursor.getInt(HomeActivity.COL_EXERCISES_TYPE)) {
                     case STEP_UPS:
                         sessionAndTypeText.append(' ');
@@ -205,13 +195,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
                 exerciseViewHolder.mSessionAndTypeView.setText(sessionAndTypeText);
 
-                if (mCursor.getInt(HomeActivity.COL_EXERCISES_SUCCESS) == SESSION_COMPLETED ||
-                        !prescribed) {
-                    exerciseViewHolder.mExerciseIconView
-                            .setImageResource(R.drawable.ic_bench_step_up_complete);
+                if (mCursor.getInt(HomeActivity.COL_EXERCISES_SUCCESS) == SESSION_COMPLETED || !prescribed) {
+                    exerciseViewHolder.mExerciseIconView.setImageResource(R.drawable.ic_bench_step_up_complete);
                 } else {
-                    exerciseViewHolder.mExerciseIconView
-                            .setImageResource(R.drawable.ic_bench_step_up);
+                    exerciseViewHolder.mExerciseIconView.setImageResource(R.drawable.ic_bench_step_up);
                 }
 
                 int actualLength = mCursor.getInt(HomeActivity.COL_EXERCISES_ACTUAL_LENGTH);
@@ -227,51 +214,45 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 timeText.append(' ');
                 int tempLength = timeText.length();
                 timeText.append(mContext.getString(R.string.m));
-                timeText.setSpan(new ForegroundColorSpan(
-                                ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                        tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                timeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                    tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 timeText.append(' ');
                 timeText.append(String.format("%02d", actualSecs));
                 timeText.append(' ');
                 tempLength = timeText.length();
                 timeText.append(mContext.getString(R.string.s));
-                timeText.setSpan(new ForegroundColorSpan(
-                                ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                        tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                timeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                    tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 if (prescribed) {
                     timeText.append(' ');
                     tempLength = timeText.length();
                     timeText.append('/');
-                    timeText.setSpan(new ForegroundColorSpan(
-                                    ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                            tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    timeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                        tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     timeText.append(' ');
                     timeText.append(String.valueOf(targetMins));
                     timeText.append(' ');
                     tempLength = timeText.length();
                     timeText.append(mContext.getString(R.string.m));
-                    timeText.setSpan(new ForegroundColorSpan(
-                                    ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                            tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    timeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                        tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     timeText.append(' ');
                     timeText.append(String.format("%02d", targetSecs));
                     timeText.append(' ');
                     tempLength = timeText.length();
                     timeText.append(mContext.getString(R.string.s));
-                    timeText.setSpan(new ForegroundColorSpan(
-                                    ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                            tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    timeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                        tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
                 exerciseViewHolder.mTimeView.setText(timeText);
 
                 String timeDescription;
                 if (prescribed) {
                     timeDescription = mContext.getString(R.string.a11y_time_and_target_time,
-                            actualMins, actualSecs, targetMins, targetSecs);
+					    actualMins, actualSecs, targetMins, targetSecs);
                 } else {
-                    timeDescription =
-                            mContext.getString(R.string.a11y_time, actualMins, actualSecs);
+                    timeDescription = mContext.getString(R.string.a11y_time, actualMins, actualSecs);
                 }
                 exerciseViewHolder.mTimeView.setContentDescription(timeDescription);
 
@@ -281,9 +262,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 String rpeDescription;
                 SpannableStringBuilder rpeText = new SpannableStringBuilder();
                 rpeText.append(mContext.getString(R.string.rpe_colon));
-                rpeText.setSpan(new ForegroundColorSpan(
-                                ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                        0, rpeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                rpeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                    0, rpeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 rpeText.append(' ');
                 rpeText.append(String.valueOf(actualRPE));
 
@@ -294,9 +274,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     tempLength = rpeText.length();
                     rpeText.append(mContext.getString(R.string.target));
                     rpeText.append(':');
-                    rpeText.setSpan(new ForegroundColorSpan(
-                                    ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                            tempLength, rpeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    rpeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                        tempLength, rpeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     rpeText.append(' ');
                     rpeText.append(String.valueOf(targetRPE));
                 } else {
@@ -322,8 +301,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        if (null == mListItemToDataMap) return 0;
-        return mListItemToDataMap.size();
+		return mListItemToDataMap == null ? 0 : mListItemToDataMap.size();
     }
 
     public void swapCursor(Cursor newCursor) {

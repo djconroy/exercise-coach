@@ -38,8 +38,7 @@ public class ScheduleExercisesService extends IntentService {
         Utility.adjustForDST(this, today);
         long startDate = intent.getLongExtra(EXTRA_START_DATE, today.getTimeInMillis());
 
-        SharedPreferences levelSharedPrefs = getSharedPreferences(
-                getString(R.string.level_key), Context.MODE_PRIVATE);
+        SharedPreferences levelSharedPrefs = getSharedPreferences(getString(R.string.level_key), Context.MODE_PRIVATE);
         int previousLevel = levelSharedPrefs.getInt(getString(R.string.current_level), 0);
         int currentLevel = intent.getIntExtra(EXTRA_NEXT_LEVEL, previousLevel + 1);
 
@@ -48,15 +47,14 @@ public class ScheduleExercisesService extends IntentService {
         editor.putInt(getString(R.string.current_level), currentLevel);
         editor.commit();
 
-        Cursor cursor = getContentResolver().query(
-                PrescribedExercisesEntry.buildPrescribedExercisesWeek(currentLevel),
-                new String[]{PrescribedExercisesEntry.COLUMN_DAY,
-                        PrescribedExercisesEntry.COLUMN_SESSION,
-                        PrescribedExercisesEntry.COLUMN_TARGET_LENGTH,
-                        PrescribedExercisesEntry.COLUMN_TARGET_RPE},
-                null, null,
-                PrescribedExercisesEntry.COLUMN_DAY + " ASC, " +
-                        PrescribedExercisesEntry.COLUMN_SESSION + " ASC");
+        Cursor cursor = getContentResolver().query(PrescribedExercisesEntry.buildPrescribedExercisesWeek(currentLevel),
+            new String[]{PrescribedExercisesEntry.COLUMN_DAY,
+                         PrescribedExercisesEntry.COLUMN_SESSION,
+                         PrescribedExercisesEntry.COLUMN_TARGET_LENGTH,
+                         PrescribedExercisesEntry.COLUMN_TARGET_RPE},
+            null,
+            null,
+            PrescribedExercisesEntry.COLUMN_DAY + " ASC, " + PrescribedExercisesEntry.COLUMN_SESSION + " ASC");
         final int COL_DAY = 0;
         final int COL_SESSION = 1;
         final int COL_TARGET_LEN = 2;
@@ -70,8 +68,7 @@ public class ScheduleExercisesService extends IntentService {
         ContentValues[] contentValuesArray = new ContentValues[numSessions];
         for (int i = 0; cursor.moveToNext(); i++) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(COLUMN_DATE, startDate +
-                    (cursor.getInt(COL_DAY) - 1) * DateUtils.DAY_IN_MILLIS);
+            contentValues.put(COLUMN_DATE, startDate + (cursor.getInt(COL_DAY) - 1) * DateUtils.DAY_IN_MILLIS);
             contentValues.put(COLUMN_SESSION, cursor.getInt(COL_SESSION));
             contentValues.put(COLUMN_LEVEL, currentLevel);
             contentValues.put(COLUMN_TARGET_LENGTH, cursor.getInt(COL_TARGET_LEN));

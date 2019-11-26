@@ -37,8 +37,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public class ExerciseViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+    public class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mExerciseDescriptionView;
         public final TextView mSessionView;
         public final TextView mTimeView;
@@ -58,8 +57,8 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(mListItemToDataMap.get(adapterPosition));
             mClickHandler.onClick(mCursor.getLong(HomeActivity.COL_EXERCISES_DATE),
-                    mCursor.getInt(HomeActivity.COL_EXERCISES_PRESCRIBED),
-                    mCursor.getInt(HomeActivity.COL_EXERCISES_SESSION));
+                                  mCursor.getInt(HomeActivity.COL_EXERCISES_PRESCRIBED),
+                                  mCursor.getInt(HomeActivity.COL_EXERCISES_SESSION));
         }
     }
 
@@ -94,13 +93,11 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             View view;
             switch (viewType) {
                 case TYPE_SUBTITLE:
-                    view = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.list_item_subtitle, parent, false);
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_subtitle, parent, false);
                     view.setFocusable(true);
                     return new SubtitleViewHolder(view);
                 case TYPE_EXERCISE:
-                    view = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.list_item_exercise, parent, false);
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_exercise, parent, false);
                     view.setFocusable(true);
                     return new ExerciseViewHolder(view);
                 default:
@@ -117,11 +114,9 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             case TYPE_SUBTITLE:
                 mCursor.moveToPosition(mListItemToDataMap.get(position + 1));
                 SubtitleViewHolder subtitleViewHolder = (SubtitleViewHolder) holder;
-                subtitleViewHolder.mSubtitleView.setText(
-                        mContext.getString(R.string.date_and_level,
-                                Utility.getFriendlyDayString(mContext,
-                                        mCursor.getLong(HomeActivity.COL_EXERCISES_DATE)),
-                                mCursor.getInt(HomeActivity.COL_EXERCISES_LEVEL)));
+                subtitleViewHolder.mSubtitleView.setText(mContext.getString(R.string.date_and_level,
+                    Utility.getFriendlyDayString(mContext, mCursor.getLong(HomeActivity.COL_EXERCISES_DATE)),
+                    mCursor.getInt(HomeActivity.COL_EXERCISES_LEVEL)));
                 break;
             case TYPE_EXERCISE:
                 mCursor.moveToPosition(mListItemToDataMap.get(position));
@@ -145,8 +140,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         break;
                 }
                 exerciseViewHolder.mExerciseDescriptionView.setText(exerciseType);
-                exerciseViewHolder.mExerciseDescriptionView
-                        .setContentDescription(exerciseDescription);
+                exerciseViewHolder.mExerciseDescriptionView.setContentDescription(exerciseDescription);
 
                 boolean prescribed = false;
                 switch (mCursor.getInt(HomeActivity.COL_EXERCISES_PRESCRIBED)) {
@@ -160,11 +154,10 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 if (prescribed) {
                     exerciseViewHolder.mSessionView.setText(mContext.getString(R.string.session,
-                            mCursor.getInt(HomeActivity.COL_EXERCISES_SESSION)));
+                        mCursor.getInt(HomeActivity.COL_EXERCISES_SESSION)));
                 } else {
-                    exerciseViewHolder.mSessionView.setText(mContext.getString(
-                            R.string.extra_session,
-                            mCursor.getInt(HomeActivity.COL_EXERCISES_SESSION)));
+                    exerciseViewHolder.mSessionView.setText(mContext.getString(R.string.extra_session,
+                        mCursor.getInt(HomeActivity.COL_EXERCISES_SESSION)));
                 }
 
                 // Change the text size of the displayed exercise duration depending on the font
@@ -177,15 +170,12 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     exerciseViewHolder.mTimeView.setTextSize(16);
                 }
 
-                if (!prescribed || mCursor.getInt(HomeActivity.COL_EXERCISES_SUCCESS) ==
-                        ExerciseCalendarEntry.SESSION_COMPLETED) {
+                if (!prescribed || mCursor.getInt(HomeActivity.COL_EXERCISES_SUCCESS) == ExerciseCalendarEntry.SESSION_COMPLETED) {
                     exerciseViewHolder.mExerciseDescriptionView
-                            .setCompoundDrawablesWithIntrinsicBounds(
-                                    0, R.drawable.ic_bench_step_up_complete, 0, 0);
+                        .setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_bench_step_up_complete, 0, 0);
                 } else {
                     exerciseViewHolder.mExerciseDescriptionView
-                            .setCompoundDrawablesWithIntrinsicBounds(
-                                    0, R.drawable.ic_bench_step_up, 0, 0);
+                        .setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_bench_step_up, 0, 0);
                 }
 
                 int actualLength = mCursor.getInt(HomeActivity.COL_EXERCISES_ACTUAL_LENGTH);
@@ -198,65 +188,55 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 SpannableStringBuilder timeText = new SpannableStringBuilder();
                 timeText.append(String.valueOf(actualMins));
-                timeText.setSpan(new RelativeSizeSpan(1.3f),
-                        0, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                timeText.setSpan(new RelativeSizeSpan(1.3f), 0, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 timeText.append(' ');
                 int tempLength = timeText.length();
                 timeText.append(mContext.getString(R.string.m));
-                timeText.setSpan(new ForegroundColorSpan(
-                                ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                        tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                timeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                    tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 timeText.append(' ');
                 tempLength = timeText.length();
                 timeText.append(String.format("%02d", actualSecs));
-                timeText.setSpan(new RelativeSizeSpan(1.3f),
-                        tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                timeText.setSpan(new RelativeSizeSpan(1.3f), tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 timeText.append(' ');
                 tempLength = timeText.length();
                 timeText.append(mContext.getString(R.string.s));
-                timeText.setSpan(new ForegroundColorSpan(
-                                ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                        tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                timeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                    tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 if (prescribed) {
                     timeText.append(' ');
                     tempLength = timeText.length();
                     timeText.append('/');
-                    timeText.setSpan(new ForegroundColorSpan(
-                                    ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                            tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    timeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                        tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     timeText.append(' ');
                     tempLength = timeText.length();
                     timeText.append(String.valueOf(targetMins));
-                    timeText.setSpan(new RelativeSizeSpan(1.3f),
-                            tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    timeText.setSpan(new RelativeSizeSpan(1.3f), tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     timeText.append(' ');
                     tempLength = timeText.length();
                     timeText.append(mContext.getString(R.string.m));
-                    timeText.setSpan(new ForegroundColorSpan(
-                                    ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                            tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    timeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                        tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     timeText.append(' ');
                     tempLength = timeText.length();
                     timeText.append(String.format("%02d", targetSecs));
-                    timeText.setSpan(new RelativeSizeSpan(1.3f),
-                            tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    timeText.setSpan(new RelativeSizeSpan(1.3f), tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     timeText.append(' ');
                     tempLength = timeText.length();
                     timeText.append(mContext.getString(R.string.s));
-                    timeText.setSpan(new ForegroundColorSpan(
-                                    ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                            tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    timeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                        tempLength, timeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
                 exerciseViewHolder.mTimeView.setText(timeText);
 
                 String timeDescription;
                 if (prescribed) {
                     timeDescription = mContext.getString(R.string.a11y_time_and_target_time,
-                            actualMins, actualSecs, targetMins, targetSecs);
+                        actualMins, actualSecs, targetMins, targetSecs);
                 } else {
-                    timeDescription =
-                            mContext.getString(R.string.a11y_time, actualMins, actualSecs);
+                    timeDescription = mContext.getString(R.string.a11y_time, actualMins, actualSecs);
                 }
                 exerciseViewHolder.mTimeView.setContentDescription(timeDescription);
 
@@ -266,9 +246,8 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 String rpeDescription;
                 SpannableStringBuilder rpeText = new SpannableStringBuilder();
                 rpeText.append(mContext.getString(R.string.rpe_colon));
-                rpeText.setSpan(new ForegroundColorSpan(
-                                ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                        0, rpeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                rpeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                    0, rpeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 rpeText.append(' ');
                 rpeText.append(String.valueOf(actualRPE));
 
@@ -279,9 +258,8 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     tempLength = rpeText.length();
                     rpeText.append(mContext.getString(R.string.target));
                     rpeText.append(':');
-                    rpeText.setSpan(new ForegroundColorSpan(
-                                    ContextCompat.getColor(mContext, R.color.colorPrimary)),
-                            tempLength, rpeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    rpeText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorPrimary)),
+                        tempLength, rpeText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     rpeText.append(' ');
                     rpeText.append(String.valueOf(targetRPE));
                 } else {
@@ -305,8 +283,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        if (null == mListItemToDataMap) return 0;
-        return mListItemToDataMap.size();
+		return mListItemToDataMap == null ? 0 : mListItemToDataMap.size();
     }
 
     public void swapCursor(Cursor newCursor) {

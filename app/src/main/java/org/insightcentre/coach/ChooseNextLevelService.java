@@ -27,12 +27,11 @@ public class ChooseNextLevelService extends IntentService {
         today.setTimeZone(Utility.timeZoneAtHome());
         Utility.setMidnight(today);
         Utility.adjustForDST(this, today);
+
         long lastWeekInMillis = today.getTimeInMillis() - DateUtils.WEEK_IN_MILLIS;
 
-        SharedPreferences datesSharedPrefs =
-                getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
-        long endDate =
-                datesSharedPrefs.getLong(getString(R.string.end_date), today.getTimeInMillis());
+        SharedPreferences datesSharedPrefs = getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
+        long endDate = datesSharedPrefs.getLong(getString(R.string.end_date), today.getTimeInMillis());
 
         if (today.getTimeInMillis() + DateUtils.WEEK_IN_MILLIS <= endDate) {
             Calendar nextWeekLocal = Calendar.getInstance();
@@ -42,18 +41,15 @@ public class ChooseNextLevelService extends IntentService {
             AlarmScheduler.setExerciseSchedulerAlarm(this, nextWeekLocal.getTimeInMillis());
         }
 
-        // Check whether the database contains prescribed exercise data for today or any day in the
-        // future. If so, then exercises have already been scheduled for the current week, so we
-        // should return from this service so they are not scheduled again. I'm guessing this
-        // situation could occur if the device is rebooted on the day those exercises were
-        // scheduled and this service is started again.
-        Cursor futurePrescriptionsCursor = getContentResolver().query(
-                CONTENT_URI,
-                new String[]{"COUNT(*)"},
-                COLUMN_PRESCRIBED + " = ? AND " + COLUMN_DATE + " >= ?",
-                new String[]{Integer.toString(SESSION_PRESCRIBED),
-                        Long.toString(today.getTimeInMillis())},
-                null);
+        // Check whether the database contains prescribed exercise data for today or any day in the future.
+        // If so, then exercises have already been scheduled for the current week, so we should return from this service
+        // so they are not scheduled again. I'm guessing this situation could occur if the device is rebooted on the day
+        // those exercises were scheduled and this service is started again.
+        Cursor futurePrescriptionsCursor = getContentResolver().query(CONTENT_URI,
+            new String[]{"COUNT(*)"},
+            COLUMN_PRESCRIBED + " = ? AND " + COLUMN_DATE + " >= ?",
+            new String[]{Integer.toString(SESSION_PRESCRIBED), Long.toString(today.getTimeInMillis())},
+            null);
         if (futurePrescriptionsCursor != null && futurePrescriptionsCursor.moveToFirst() &&
                 futurePrescriptionsCursor.getInt(0) > 0) {
             futurePrescriptionsCursor.close();
@@ -63,28 +59,24 @@ public class ChooseNextLevelService extends IntentService {
             futurePrescriptionsCursor.close();
         }
 
-        Cursor prescriptionsCursor = getContentResolver().query(
-                CONTENT_URI,
-                new String[]{COLUMN_TARGET_LENGTH, COLUMN_SUCCESS},
-                COLUMN_PRESCRIBED + " = ? AND " + COLUMN_DATE + " >= ? AND " +
-                        COLUMN_DATE + " < ?",
-                new String[]{Integer.toString(SESSION_PRESCRIBED),
-                        Long.toString(lastWeekInMillis),
-                        Long.toString(today.getTimeInMillis())},
-                COLUMN_TARGET_LENGTH + " DESC");
+        Cursor prescriptionsCursor = getContentResolver().query(CONTENT_URI,
+            new String[]{COLUMN_TARGET_LENGTH, COLUMN_SUCCESS},
+            COLUMN_PRESCRIBED + " = ? AND " + COLUMN_DATE + " >= ? AND " + COLUMN_DATE + " < ?",
+            new String[]{Integer.toString(SESSION_PRESCRIBED),
+                         Long.toString(lastWeekInMillis),
+                         Long.toString(today.getTimeInMillis())},
+            COLUMN_TARGET_LENGTH + " DESC");
 
         final int COL_PRE_TARGET_LEN = 0;
         final int COL_PRE_SUCCESS = 1;
 
-        Cursor extraSessionsCursor = getContentResolver().query(
-                CONTENT_URI,
-                new String[]{COLUMN_ACTUAL_LENGTH},
-                COLUMN_PRESCRIBED + " = ? AND " + COLUMN_DATE + " >= ? AND " +
-                        COLUMN_DATE + " < ?",
-                new String[]{Integer.toString(SESSION_NOT_PRESCRIBED),
-                        Long.toString(lastWeekInMillis),
-                        Long.toString(today.getTimeInMillis())},
-                COLUMN_ACTUAL_LENGTH + " DESC");
+        Cursor extraSessionsCursor = getContentResolver().query(CONTENT_URI,
+            new String[]{COLUMN_ACTUAL_LENGTH},
+            COLUMN_PRESCRIBED + " = ? AND " + COLUMN_DATE + " >= ? AND " + COLUMN_DATE + " < ?",
+            new String[]{Integer.toString(SESSION_NOT_PRESCRIBED),
+                         Long.toString(lastWeekInMillis),
+                         Long.toString(today.getTimeInMillis())},
+            COLUMN_ACTUAL_LENGTH + " DESC");
 
         final int COL_EXTRA_LEN = 0;
 
@@ -104,12 +96,10 @@ public class ChooseNextLevelService extends IntentService {
 
             if (numTargetsMet < prescriptionsCursor.getCount()) {
                 int missedTargetIndex = 0;
-                while (extraSessionsCursor.moveToNext() &&
-                        missedTargetIndex < missedTargetLengths.size()) {
+                while (extraSessionsCursor.moveToNext() && missedTargetIndex < missedTargetLengths.size()) {
                     // Search for the next missed target not longer than the current extra session
-                    while (missedTargetIndex < missedTargetLengths.size() &&
-                            missedTargetLengths.get(missedTargetIndex) >
-                                    extraSessionsCursor.getInt(COL_EXTRA_LEN)) {
+                    while (missedTargetIndex < missedTargetLengths.size()
+                           && missedTargetLengths.get(missedTargetIndex) > extraSessionsCursor.getInt(COL_EXTRA_LEN)) {
                         missedTargetIndex++;
                     }
                     if (missedTargetIndex < missedTargetLengths.size()) {
@@ -129,14 +119,12 @@ public class ChooseNextLevelService extends IntentService {
             extraSessionsCursor.close();
         }
 
-        SharedPreferences statisticsSharedPrefs =
-                getSharedPreferences(getString(R.string.statistics_key), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = statisticsSharedPrefs.edit();
+        SharedPreferences statsSharedPrefs = getSharedPreferences(getString(R.string.stats_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = statsSharedPrefs.edit();
         editor.putFloat(getString(R.string.current_success_rate), successRate);
         editor.commit();
 
-        SharedPreferences levelSharedPrefs =
-                getSharedPreferences(getString(R.string.level_key), Context.MODE_PRIVATE);
+        SharedPreferences levelSharedPrefs = getSharedPreferences(getString(R.string.level_key), Context.MODE_PRIVATE);
         int previousLevel = levelSharedPrefs.getInt(getString(R.string.previous_level), 0);
         int currentLevel = levelSharedPrefs.getInt(getString(R.string.current_level), 1);
         int nextLevel;

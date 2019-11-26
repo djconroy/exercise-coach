@@ -25,21 +25,18 @@ public class DeviceBootAndTimeZoneChangeReceiver extends BroadcastReceiver {
             Utility.setMidnight(today);
             Utility.adjustForDST(context, today);
 
-            SharedPreferences datesSharedPrefs = context.getSharedPreferences(
-                    context.getString(R.string.dates_key), Context.MODE_PRIVATE);
-            long startDate = datesSharedPrefs.getLong(
-                    context.getString(R.string.start_date), today.getTimeInMillis());
-            long endDate = datesSharedPrefs.getLong(
-                    context.getString(R.string.end_date), today.getTimeInMillis());
+            SharedPreferences datesSharedPrefs =
+			    context.getSharedPreferences(context.getString(R.string.dates_key), Context.MODE_PRIVATE);
+            long startDate = datesSharedPrefs.getLong(context.getString(R.string.start_date), today.getTimeInMillis());
+            long endDate = datesSharedPrefs.getLong(context.getString(R.string.end_date), today.getTimeInMillis());
 
             if (today.getTimeInMillis() > endDate) {
-                ComponentName receiver =
-                        new ComponentName(context, DeviceBootAndTimeZoneChangeReceiver.class);
+                ComponentName receiver = new ComponentName(context, DeviceBootAndTimeZoneChangeReceiver.class);
                 PackageManager packageManager = context.getPackageManager();
 
                 packageManager.setComponentEnabledSetting(receiver,
-                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                        PackageManager.DONT_KILL_APP);
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
                 return;
             }
 
@@ -69,9 +66,7 @@ public class DeviceBootAndTimeZoneChangeReceiver extends BroadcastReceiver {
                 schedulerAlarmDate = secondWeekLocal.getTimeInMillis();
             } else {
                 alarmDate = todayLocal.getTimeInMillis();
-                int dayOffset =
-                        (int) (((today.getTimeInMillis() - startDate) % DateUtils.WEEK_IN_MILLIS)
-                                / DateUtils.DAY_IN_MILLIS);
+                int dayOffset = (int) (((today.getTimeInMillis() - startDate) % DateUtils.WEEK_IN_MILLIS) / DateUtils.DAY_IN_MILLIS);
                 if (dayOffset == 0) {
                     schedulerAlarmDate = todayLocal.getTimeInMillis();
                 } else {

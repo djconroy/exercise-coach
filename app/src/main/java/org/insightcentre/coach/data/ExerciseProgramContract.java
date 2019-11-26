@@ -11,29 +11,26 @@ import android.provider.BaseColumns;
  */
 public class ExerciseProgramContract {
 
-    // The "Content authority" is a name for the entire content provider, similar to the
-    // relationship between a domain name and its website.  A convenient string to use for the
-    // content authority is the package name for the app, which is guaranteed to be unique on the
-    // device.
+    // The "Content authority" is a name for the entire content provider, similar to the relationship
+    // between a domain name and its website. A convenient string to use for the content authority
+    // is the package name for the app, which is guaranteed to be unique on the device.
     public static final String CONTENT_AUTHORITY = "org.insightcentre.coach";
 
-    // Use CONTENT_AUTHORITY to create the base of all URI's which the app will use to contact
-    // the content provider.
+    // Use CONTENT_AUTHORITY to create the base of all URI's which the app will use to contact the content provider.
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_PRESCRIBED_EXERCISES = "prescribed_exercises";
     public static final String PATH_EXERCISE_CALENDAR = "exercise_calendar";
 
-    /* Inner class that defines the table contents of the prescribed exercises table */
+    // Inner class that defines the table contents of the prescribed exercises table
     public static final class PrescribedExercisesEntry implements BaseColumns {
 
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PRESCRIBED_EXERCISES).build();
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_PRESCRIBED_EXERCISES).build();
 
-        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
-                "/" + CONTENT_AUTHORITY + "/" + PATH_PRESCRIBED_EXERCISES;
-        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
-                "/" + CONTENT_AUTHORITY + "/" + PATH_PRESCRIBED_EXERCISES;
+        public static final String CONTENT_TYPE =
+            ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PRESCRIBED_EXERCISES;
+        public static final String CONTENT_ITEM_TYPE =
+            ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PRESCRIBED_EXERCISES;
 
         public static final String TABLE_NAME = "prescribed_exercises";
 
@@ -57,8 +54,7 @@ public class ExerciseProgramContract {
         }
 
         public static Uri buildPrescribedExercisesWeekWithDay(int week, int day) {
-            return CONTENT_URI.buildUpon().appendPath(Integer.toString(week))
-                    .appendPath(Integer.toString(day)).build();
+            return CONTENT_URI.buildUpon().appendPath(Integer.toString(week)).appendPath(Integer.toString(day)).build();
         }
 
         public static int getWeekFromUri(Uri uri) {
@@ -70,16 +66,15 @@ public class ExerciseProgramContract {
         }
     }
 
-    /* Inner class that defines the table contents of the exercise calendar table */
+    // Inner class that defines the table contents of the exercise calendar table
     public static final class ExerciseCalendarEntry implements BaseColumns {
 
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_EXERCISE_CALENDAR).build();
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EXERCISE_CALENDAR).build();
 
-        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
-                "/" + CONTENT_AUTHORITY + "/" + PATH_EXERCISE_CALENDAR;
-        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
-                "/" + CONTENT_AUTHORITY + "/" + PATH_EXERCISE_CALENDAR;
+        public static final String CONTENT_TYPE =
+            ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_EXERCISE_CALENDAR;
+        public static final String CONTENT_ITEM_TYPE =
+            ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_EXERCISE_CALENDAR;
 
         public static final String TABLE_NAME = "exercise_calendar";
 
@@ -124,11 +119,10 @@ public class ExerciseProgramContract {
             return CONTENT_URI.buildUpon().appendPath(Long.toString(date)).build();
         }
 
-        public static Uri buildExerciseCalendarDateWithPrescribedAndSession(
-                long date, int prescribed, int session) {
+        public static Uri buildExerciseCalendarDateWithPrescribedAndSession(long date, int prescribed, int session) {
             return CONTENT_URI.buildUpon().appendPath(Long.toString(date))
-                    .appendPath(Integer.toString(prescribed))
-                    .appendPath(Integer.toString(session)).build();
+                                          .appendPath(Integer.toString(prescribed))
+                                          .appendPath(Integer.toString(session)).build();
         }
 
         public static long getDateFromUri(Uri uri) {

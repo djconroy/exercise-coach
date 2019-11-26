@@ -39,8 +39,7 @@ public class MorningNotificationService extends IntentService {
         Utility.adjustForDST(this, calendar);
         long todayInMillis = calendar.getTimeInMillis();
 
-        SharedPreferences datesSharedPrefs =
-                getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
+        SharedPreferences datesSharedPrefs = getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
         long endDate = datesSharedPrefs.getLong(getString(R.string.end_date), todayInMillis);
 
         if (todayInMillis + DateUtils.DAY_IN_MILLIS <= endDate) {
@@ -51,12 +50,11 @@ public class MorningNotificationService extends IntentService {
             AlarmScheduler.setMorningAlarm(this, tomorrowLocal.getTimeInMillis());
         }
 
-        Cursor prescriptionCursor = getContentResolver().query(
-                buildExerciseCalendarDate(todayInMillis),
-                new String[]{COLUMN_TARGET_LENGTH, COLUMN_TARGET_RPE},
-                COLUMN_PRESCRIBED + " = ?",
-                new String[]{Integer.toString(SESSION_PRESCRIBED)},
-                null);
+        Cursor prescriptionCursor = getContentResolver().query(buildExerciseCalendarDate(todayInMillis),
+            new String[]{COLUMN_TARGET_LENGTH, COLUMN_TARGET_RPE},
+            COLUMN_PRESCRIBED + " = ?",
+            new String[]{Integer.toString(SESSION_PRESCRIBED)},
+            null);
 
         final int COL_PRE_TARGET_LEN = 0;
         final int COL_PRE_TARGET_RPE = 1;
@@ -82,27 +80,25 @@ public class MorningNotificationService extends IntentService {
         } else {
             do {
                 calendar.setTimeInMillis(calendar.getTimeInMillis() - DateUtils.DAY_IN_MILLIS);
-                lastPrescriptionCursor = getContentResolver().query(
-                        buildExerciseCalendarDate(calendar.getTimeInMillis()),
-                        new String[]{COLUMN_TARGET_LENGTH, COLUMN_SUCCESS},
-                        COLUMN_PRESCRIBED + " = ?",
-                        new String[]{Integer.toString(SESSION_PRESCRIBED)},
-                        COLUMN_TARGET_LENGTH + " DESC");
-                // If the do-while loop will iterate one more time, close the cursor opened in
-                // this iteration to prevent memory leaks
+                lastPrescriptionCursor = getContentResolver().query(buildExerciseCalendarDate(calendar.getTimeInMillis()),
+                    new String[]{COLUMN_TARGET_LENGTH, COLUMN_SUCCESS},
+                    COLUMN_PRESCRIBED + " = ?",
+                    new String[]{Integer.toString(SESSION_PRESCRIBED)},
+                    COLUMN_TARGET_LENGTH + " DESC");
+                // If the do-while loop will iterate one more time, close the cursor opened in this iteration
+                // to prevent memory leaks
                 if (calendar.getTimeInMillis() > startDate && lastPrescriptionCursor != null
                         && lastPrescriptionCursor.getCount() == 0) {
                     lastPrescriptionCursor.close();
                 }
-            } while (calendar.getTimeInMillis() > startDate &&
-                    (lastPrescriptionCursor == null || lastPrescriptionCursor.getCount() == 0));
+            } while (calendar.getTimeInMillis() > startDate
+                     && (lastPrescriptionCursor == null || lastPrescriptionCursor.getCount() == 0));
 
-            if (calendar.getTimeInMillis() == startDate &&
-                    (lastPrescriptionCursor == null || lastPrescriptionCursor.getCount() == 0)) {
+            if (calendar.getTimeInMillis() == startDate
+                    && (lastPrescriptionCursor == null || lastPrescriptionCursor.getCount() == 0)) {
                 isFirstPrescription = true;
             }
-            // Treat the case when lastPrescriptionCursor is null the same as the case when it's
-            // the first prescription
+            // Treat the case when lastPrescriptionCursor is null the same as the case when it's the first prescription
             if (lastPrescriptionCursor == null) {
                 isFirstPrescription = true;
             }
@@ -121,10 +117,10 @@ public class MorningNotificationService extends IntentService {
         StringBuilder stringBuilder = new StringBuilder();
         for (int num = 1; prescriptionCursor.moveToNext(); num++) {
             stringBuilder.append(' ').append(' ').append(' ').append(num).append('.').append(' ')
-                    .append(' ').append(prescriptionCursor.getInt(COL_PRE_TARGET_LEN) / 60)
-                    .append(' ').append(getString(R.string.mins)).append(',').append(' ')
-                    .append(getString(R.string.rpe)).append(' ')
-                    .append(prescriptionCursor.getInt(COL_PRE_TARGET_RPE)).append('\n');
+                .append(' ').append(prescriptionCursor.getInt(COL_PRE_TARGET_LEN) / 60)
+                .append(' ').append(getString(R.string.mins)).append(',').append(' ')
+                .append(getString(R.string.rpe)).append(' ')
+                .append(prescriptionCursor.getInt(COL_PRE_TARGET_RPE)).append('\n');
         }
         // Delete last newline character
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
@@ -150,16 +146,13 @@ public class MorningNotificationService extends IntentService {
                         break;
                     case SESSION_STARTED:
                         numStarted++;
-                        missedTargetLengths.add(
-                                lastPrescriptionCursor.getInt(COL_LAST_TARGET_LEN));
+                        missedTargetLengths.add(lastPrescriptionCursor.getInt(COL_LAST_TARGET_LEN));
                         break;
                     case SESSION_FAILED:
-                        missedTargetLengths.add(
-                                lastPrescriptionCursor.getInt(COL_LAST_TARGET_LEN));
+                        missedTargetLengths.add(lastPrescriptionCursor.getInt(COL_LAST_TARGET_LEN));
                         break;
                     case SUCCESS_NOT_RECORDED:
-                        missedTargetLengths.add(
-                                lastPrescriptionCursor.getInt(COL_LAST_TARGET_LEN));
+                        missedTargetLengths.add(lastPrescriptionCursor.getInt(COL_LAST_TARGET_LEN));
                         break;
                 }
             }
@@ -167,27 +160,22 @@ public class MorningNotificationService extends IntentService {
             if (numCompleted == lastPrescriptionCursor.getCount()) {
                 bigViewMessage = getString(R.string.message_on_complete_success);
             } else {
-                Cursor extraSessionsCursor = getContentResolver().query(
-                        CONTENT_URI,
-                        new String[]{COLUMN_ACTUAL_LENGTH},
-                        COLUMN_PRESCRIBED + " = ? AND " + COLUMN_DATE + " >= ? AND " +
-                                COLUMN_DATE + " < ?",
-                        new String[]{Integer.toString(SESSION_NOT_PRESCRIBED),
-                                Long.toString(calendar.getTimeInMillis()),
-                                Long.toString(todayInMillis)},
-                        COLUMN_ACTUAL_LENGTH + " DESC");
+                Cursor extraSessionsCursor = getContentResolver().query(CONTENT_URI,
+                    new String[]{COLUMN_ACTUAL_LENGTH},
+                    COLUMN_PRESCRIBED + " = ? AND " + COLUMN_DATE + " >= ? AND " + COLUMN_DATE + " < ?",
+                    new String[]{Integer.toString(SESSION_NOT_PRESCRIBED),
+                                 Long.toString(calendar.getTimeInMillis()),
+                                 Long.toString(todayInMillis)},
+                    COLUMN_ACTUAL_LENGTH + " DESC");
 
                 final int COL_EXTRA_LEN = 0;
 
                 if (extraSessionsCursor != null) {
                     int missedTargetIndex = 0;
-                    while (extraSessionsCursor.moveToNext() &&
-                            missedTargetIndex < missedTargetLengths.size()) {
-                        // Search for the next missed target not longer than the current extra
-                        // session
-                        while (missedTargetIndex < missedTargetLengths.size() &&
-                                missedTargetLengths.get(missedTargetIndex) >
-                                        extraSessionsCursor.getInt(COL_EXTRA_LEN)) {
+                    while (extraSessionsCursor.moveToNext() && missedTargetIndex < missedTargetLengths.size()) {
+                        // Search for the next missed target not longer than the current extra session
+                        while (missedTargetIndex < missedTargetLengths.size()
+                               && missedTargetLengths.get(missedTargetIndex) > extraSessionsCursor.getInt(COL_EXTRA_LEN)) {
                             missedTargetIndex++;
                         }
                         if (missedTargetIndex < missedTargetLengths.size()) {
@@ -202,8 +190,7 @@ public class MorningNotificationService extends IntentService {
                     bigViewMessage = getString(R.string.message_on_complete_success);
                 } else if (numCompleted > 0) {
                     bigViewMessage = getString(R.string.message_on_partial_success);
-                } else if ((extraSessionsCursor != null && extraSessionsCursor.getCount() > 0) ||
-                        numStarted > 0) {
+                } else if ((extraSessionsCursor != null && extraSessionsCursor.getCount() > 0) || numStarted > 0) {
                     bigViewMessage = getString(R.string.message_on_attempt);
                 } else {
                     bigViewMessage = getString(R.string.message_on_failure);
@@ -228,11 +215,9 @@ public class MorningNotificationService extends IntentService {
         }
 
         Intent resultIntent = new Intent(this, HomeActivity.class);
-        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this)
-                .addParentStack(HomeActivity.class)
-                .addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        TaskStackBuilder taskStackBuilder =
+            TaskStackBuilder.create(this).addParentStack(HomeActivity.class).addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);

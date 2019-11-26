@@ -23,6 +23,7 @@ public class ChooseStartDateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_choose_start_date);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -42,8 +43,8 @@ public class ChooseStartDateActivity extends AppCompatActivity {
         mCalendarPickerView.setCustomDayView(new DefaultDayViewAdapter());
         mCalendarPickerView.setDecorators(Collections.<CalendarCellDecorator>emptyList());
         mCalendarPickerView.init(today.getTime(), nextYear.getTime())
-                .inMode(CalendarPickerView.SelectionMode.SINGLE)
-                .withSelectedDate(today.getTime());
+                           .inMode(CalendarPickerView.SelectionMode.SINGLE)
+                           .withSelectedDate(today.getTime());
     }
 
     @Override
@@ -66,14 +67,14 @@ public class ChooseStartDateActivity extends AppCompatActivity {
             startDate.set(Calendar.DAY_OF_MONTH, startDate.get(Calendar.DAY_OF_MONTH));
             startDate.setTimeZone(Utility.timeZoneAtHome());
             Utility.setMidnight(startDate);
+
             boolean inDaylightTime = Utility.inDaylightTime(startDate);
 
-            SharedPreferences datesSharedPreferences =
-                    getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = datesSharedPreferences.edit();
+            SharedPreferences datesSharedPrefs = getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = datesSharedPrefs.edit();
             editor.putLong(getString(R.string.start_date), startDate.getTimeInMillis());
-            editor.putLong(getString(R.string.end_date), startDate.getTimeInMillis()
-                    + Utility.PROGRAM_LENGTH_IN_MILLIS - DateUtils.DAY_IN_MILLIS);
+            editor.putLong(getString(R.string.end_date),
+                           startDate.getTimeInMillis() + Utility.PROGRAM_LENGTH_IN_MILLIS - DateUtils.DAY_IN_MILLIS);
             editor.putBoolean(getString(R.string.start_date_in_dst), inDaylightTime);
             editor.commit();
             setResult(RESULT_OK);

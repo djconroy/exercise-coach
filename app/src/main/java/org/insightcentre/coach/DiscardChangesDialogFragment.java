@@ -14,7 +14,6 @@ import android.support.v4.app.DialogFragment;
  * to handle interaction events.
  */
 public class DiscardChangesDialogFragment extends DialogFragment {
-
     private DiscardChangesDialogListener mListener;
 
     @NonNull
@@ -43,8 +42,7 @@ public class DiscardChangesDialogFragment extends DialogFragment {
         try {
             mListener = (DiscardChangesDialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() +
-                    " must implement DiscardChangesDialogListener");
+            throw new ClassCastException(context.toString() + " must implement DiscardChangesDialogListener");
         }
     }
 

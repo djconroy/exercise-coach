@@ -54,10 +54,8 @@ public class RPEDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setCustomTitle(getActivity().getLayoutInflater()
-                .inflate(R.layout.custom_title_choose_rpe_dialog, null));
-        builder.setSingleChoiceItems(R.array.rpe_values, mRPE - Utility.RPE_OFFSET,
-                new DialogInterface.OnClickListener() {
+        builder.setCustomTitle(getActivity().getLayoutInflater().inflate(R.layout.custom_title_choose_rpe_dialog, null));
+        builder.setSingleChoiceItems(R.array.rpe_values, mRPE - Utility.RPE_OFFSET, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mRPE = i + Utility.RPE_OFFSET;
@@ -84,8 +82,7 @@ public class RPEDialogFragment extends DialogFragment {
         try {
             mListener = (RPEDialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() +
-                    " must implement ChooseRPEDialogListener");
+            throw new ClassCastException(context.toString() + " must implement ChooseRPEDialogListener");
         }
     }
 

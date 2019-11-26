@@ -52,7 +52,7 @@
     <string name="current_level">Current Level</string>
     <string name="previous_level">Previous Level</string>
 
-    <string name="statistics_key">Statistics Key</string>
+    <string name="stats_key">Statistics Key</string>
     <string name="current_success_rate">Current Success Rate</string>
 
     <string name="week_and_level">"Week %1$d     Level %2$d"</string>

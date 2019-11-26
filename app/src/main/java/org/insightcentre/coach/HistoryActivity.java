@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import static org.insightcentre.coach.data.ExerciseProgramContract.ExerciseCalendarEntry.*;
 
 public class HistoryActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+                             implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int HISTORY_LOADER = 0;
 
@@ -26,6 +26,7 @@ public class HistoryActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,11 +68,11 @@ public class HistoryActivity extends AppCompatActivity
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this,
-                CONTENT_URI,
-                HomeActivity.EXERCISES_COLUMNS,
-                null,
-                null,
-                COLUMN_DATE + " ASC, " + COLUMN_PRESCRIBED + " DESC, " + COLUMN_SESSION + " ASC");
+                                CONTENT_URI,
+                                HomeActivity.EXERCISES_COLUMNS,
+                                null,
+                                null,
+                                COLUMN_DATE + " ASC, " + COLUMN_PRESCRIBED + " DESC, " + COLUMN_SESSION + " ASC");
     }
 
     @Override

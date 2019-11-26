@@ -24,7 +24,7 @@ import java.util.Calendar;
 import static org.insightcentre.coach.data.ExerciseProgramContract.ExerciseCalendarEntry.*;
 
 public class DateActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+                          implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String EXTRA_DATE = "date";
 
     private static final int DATE_LOADER = 0;
@@ -35,6 +35,7 @@ public class DateActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_date);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,19 +52,16 @@ public class DateActivity extends AppCompatActivity
 
         TextView emptyView = (TextView) findViewById(R.id.recyclerview_exercises_empty);
         if (mDate < today.getTimeInMillis()) {
-            emptyView.setText(getString(R.string.empty_exercises_list_past,
-                    Utility.getFriendlyDayString(this, mDate)));
+            emptyView.setText(getString(R.string.empty_exercises_list_past, Utility.getFriendlyDayString(this, mDate)));
         } else {
-            emptyView.setText(getString(R.string.empty_exercises_list,
-                    Utility.getFriendlyDayString(this, mDate)));
+            emptyView.setText(getString(R.string.empty_exercises_list, Utility.getFriendlyDayString(this, mDate)));
         }
 
         mExercisesAdapter = new ExercisesAdapter(this,
                 new ExercisesAdapter.OnClickHandler() {
                     @Override
                     public void onClick(long date, int prescribed, int session) {
-                        onItemSelected(buildExerciseCalendarDateWithPrescribedAndSession(
-                                date, prescribed, session));
+                        onItemSelected(buildExerciseCalendarDateWithPrescribedAndSession(date, prescribed, session));
                     }
                 }, emptyView);
 
@@ -73,8 +71,8 @@ public class DateActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                recyclerView.getContext(), linearLayoutManager.getOrientation());
+        DividerItemDecoration dividerItemDecoration =
+            new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -86,19 +84,15 @@ public class DateActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(DateActivity.this, ExerciseSessionActivity.class);
-
                     int nextExtraSession = 1;
                     Cursor cursor = mExercisesAdapter.getCursor();
 
                     if (cursor.moveToLast()) {
-                        if (cursor.getInt(HomeActivity.COL_EXERCISES_PRESCRIBED) ==
-                                SESSION_NOT_PRESCRIBED) {
-                            nextExtraSession =
-                                    1 + cursor.getInt(HomeActivity.COL_EXERCISES_SESSION);
+                        if (cursor.getInt(HomeActivity.COL_EXERCISES_PRESCRIBED) == SESSION_NOT_PRESCRIBED) {
+                            nextExtraSession = 1 + cursor.getInt(HomeActivity.COL_EXERCISES_SESSION);
                         }
                     }
-                    intent.putExtra(ExerciseSessionActivity.EXTRA_NEXT_EXTRA_SESSION,
-                            nextExtraSession);
+                    intent.putExtra(ExerciseSessionActivity.EXTRA_NEXT_EXTRA_SESSION, nextExtraSession);
                     intent.putExtra(ExerciseSessionActivity.EXTRA_DATE, mDate);
                     startActivity(intent);
                 }
@@ -114,9 +108,9 @@ public class DateActivity extends AppCompatActivity
         today.setTimeZone(Utility.timeZoneAtHome());
         Utility.setMidnight(today);
         Utility.adjustForDST(this, today);
+
         if (mDate <= today.getTimeInMillis()) {
-            Intent intent = new Intent(this, ExerciseSessionActivity.class)
-                    .setData(contentUri);
+            Intent intent = new Intent(this, ExerciseSessionActivity.class).setData(contentUri);
             startActivity(intent);
         }
     }
@@ -147,23 +141,22 @@ public class DateActivity extends AppCompatActivity
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this,
-                buildExerciseCalendarDate(mDate),
-                HomeActivity.EXERCISES_COLUMNS,
-                null,
-                null,
-                COLUMN_PRESCRIBED + " DESC, " + COLUMN_SESSION + " ASC");
+                                buildExerciseCalendarDate(mDate),
+                                HomeActivity.EXERCISES_COLUMNS,
+                                null,
+                                null,
+                                COLUMN_PRESCRIBED + " DESC, " + COLUMN_SESSION + " ASC");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mExercisesAdapter.swapCursor(data);
-        AppBarLayout.LayoutParams params =
-                (AppBarLayout.LayoutParams) findViewById(R.id.toolbar).getLayoutParams();
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) findViewById(R.id.toolbar).getLayoutParams();
         if (mExercisesAdapter.getItemCount() == 0) {
             params.setScrollFlags(0);
         } else {
-            params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL |
-                    AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+            params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                                  | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
         }
     }
 

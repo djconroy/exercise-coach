@@ -30,10 +30,8 @@ public class WeeklyNotificationService extends IntentService {
         Utility.setMidnight(today);
         Utility.adjustForDST(this, today);
 
-        SharedPreferences datesSharedPrefs =
-                getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
-        long endDate =
-                datesSharedPrefs.getLong(getString(R.string.end_date), today.getTimeInMillis());
+        SharedPreferences datesSharedPrefs = getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
+        long endDate = datesSharedPrefs.getLong(getString(R.string.end_date), today.getTimeInMillis());
 
         if (today.getTimeInMillis() + DateUtils.WEEK_IN_MILLIS <= endDate) {
             Calendar nextWeekLocal = Calendar.getInstance();
@@ -43,39 +41,37 @@ public class WeeklyNotificationService extends IntentService {
             AlarmScheduler.setWeeklyAlarm(this, nextWeekLocal.getTimeInMillis());
         }
 
-        SharedPreferences statisticsSharedPrefs =
-                getSharedPreferences(getString(R.string.statistics_key), Context.MODE_PRIVATE);
-        float currentSuccessRate =
-                statisticsSharedPrefs.getFloat(getString(R.string.current_success_rate), 1f);
+        SharedPreferences statsSharedPrefs = getSharedPreferences(getString(R.string.stats_key), Context.MODE_PRIVATE);
+        float currentSuccessRate = statsSharedPrefs.getFloat(getString(R.string.current_success_rate), 1f);
 
-        SharedPreferences levelSharedPrefs =
-                getSharedPreferences(getString(R.string.level_key), Context.MODE_PRIVATE);
+        SharedPreferences levelSharedPrefs = getSharedPreferences(getString(R.string.level_key), Context.MODE_PRIVATE);
         int previousLevel = levelSharedPrefs.getInt(getString(R.string.previous_level), 0);
         int currentLevel = levelSharedPrefs.getInt(getString(R.string.current_level), 1);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(getString(R.string.program_progress))
-                .setDefaults(Notification.DEFAULT_ALL); // requires VIBRATE permission
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(getString(R.string.program_progress))
+            .setDefaults(Notification.DEFAULT_ALL); // requires VIBRATE permission
 
         String bigViewText;
+
         if (currentSuccessRate >= Utility.TARGET_SUCCESS_RATE) {
             bigViewText = String.format(getString(R.string.big_view_message_on_progress),
-                    (int) (100 * currentSuccessRate), previousLevel, currentLevel);
+                (int) (100 * currentSuccessRate), previousLevel, currentLevel);
             builder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigViewText));
+
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                builder.setContentText(
-                        String.format(getString(R.string.message_on_progress), currentLevel));
+                builder.setContentText(String.format(getString(R.string.message_on_progress), currentLevel));
             } else {
                 builder.setContentText(bigViewText);
             }
         } else {
             bigViewText = String.format(getString(R.string.big_view_message_on_no_progress),
-                    (int) (100 * currentSuccessRate), previousLevel);
+                (int) (100 * currentSuccessRate), previousLevel);
             builder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigViewText));
+
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                builder.setContentText(
-                        String.format(getString(R.string.message_on_no_progress), currentLevel));
+                builder.setContentText(String.format(getString(R.string.message_on_no_progress), currentLevel));
             } else {
                 builder.setContentText(bigViewText);
             }

@@ -20,12 +20,13 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class CalendarActivity extends AppCompatActivity
-        implements CalendarPickerView.OnDateSelectedListener {
+                              implements CalendarPickerView.OnDateSelectedListener {
     private CalendarPickerView mCalendarPickerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_calendar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -39,12 +40,9 @@ public class CalendarActivity extends AppCompatActivity
         Utility.setMidnight(calendar);
         Utility.adjustForDST(this, calendar);
 
-        SharedPreferences datesSharedPrefs =
-                getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
-        long startDate =
-                datesSharedPrefs.getLong(getString(R.string.start_date), calendar.getTimeInMillis());
-        long endDate =
-                datesSharedPrefs.getLong(getString(R.string.end_date), calendar.getTimeInMillis());
+        SharedPreferences datesSharedPrefs = getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
+        long startDate = datesSharedPrefs.getLong(getString(R.string.start_date), calendar.getTimeInMillis());
+        long endDate = datesSharedPrefs.getLong(getString(R.string.end_date), calendar.getTimeInMillis());
 
         if (calendar.getTimeInMillis() < startDate) {
             calendar.setTimeInMillis(startDate);
@@ -70,7 +68,7 @@ public class CalendarActivity extends AppCompatActivity
         mCalendarPickerView.setDecorators(Collections.<CalendarCellDecorator>emptyList());
         mCalendarPickerView.setOnDateSelectedListener(this);
         mCalendarPickerView.init(start.getTime(), end.getTime())
-                .inMode(CalendarPickerView.SelectionMode.SINGLE);
+                           .inMode(CalendarPickerView.SelectionMode.SINGLE);
     }
 
     @Override

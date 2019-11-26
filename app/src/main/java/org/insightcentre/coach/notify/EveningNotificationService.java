@@ -36,10 +36,8 @@ public class EveningNotificationService extends IntentService {
         Utility.setMidnight(today);
         Utility.adjustForDST(this, today);
 
-        SharedPreferences datesSharedPrefs =
-                getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
-        long endDate =
-                datesSharedPrefs.getLong(getString(R.string.end_date), today.getTimeInMillis());
+        SharedPreferences datesSharedPrefs = getSharedPreferences(getString(R.string.dates_key), Context.MODE_PRIVATE);
+        long endDate = datesSharedPrefs.getLong(getString(R.string.end_date), today.getTimeInMillis());
 
         if (today.getTimeInMillis() + DateUtils.DAY_IN_MILLIS <= endDate) {
             Calendar tomorrowLocal = Calendar.getInstance();
@@ -49,17 +47,14 @@ public class EveningNotificationService extends IntentService {
             AlarmScheduler.setEveningAlarm(this, tomorrowLocal.getTimeInMillis());
         }
 
-        Cursor prescriptionCursor = getContentResolver().query(
-                buildExerciseCalendarDate(today.getTimeInMillis()),
-                new String[]{"COUNT(*)"},
-                COLUMN_PRESCRIBED + " = ? AND " + COLUMN_SUCCESS + " = ?",
-                new String[]{Integer.toString(SESSION_PRESCRIBED),
-                        Integer.toString(SUCCESS_NOT_RECORDED)},
-                null);
+        Cursor prescriptionCursor = getContentResolver().query(buildExerciseCalendarDate(today.getTimeInMillis()),
+            new String[]{"COUNT(*)"},
+            COLUMN_PRESCRIBED + " = ? AND " + COLUMN_SUCCESS + " = ?",
+            new String[]{Integer.toString(SESSION_PRESCRIBED), Integer.toString(SUCCESS_NOT_RECORDED)},
+            null);
         boolean sendReminder = false;
 
-        if (prescriptionCursor != null && prescriptionCursor.moveToFirst() &&
-                prescriptionCursor.getInt(0) > 0) {
+        if (prescriptionCursor != null && prescriptionCursor.moveToFirst() && prescriptionCursor.getInt(0) > 0) {
             sendReminder = true;
         }
         if (prescriptionCursor != null) {
@@ -71,8 +66,7 @@ public class EveningNotificationService extends IntentService {
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentTitle(getString(R.string.reminder))
                     .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
-                    .setStyle(new NotificationCompat.BigTextStyle()
-                            .bigText(getString(R.string.big_view_reminder_message)));
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.big_view_reminder_message)));
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                 builder.setContentText(getString(R.string.normal_view_reminder_message));
@@ -81,11 +75,9 @@ public class EveningNotificationService extends IntentService {
             }
 
             Intent resultIntent = new Intent(this, HomeActivity.class);
-            TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this)
-                    .addParentStack(HomeActivity.class)
-                    .addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            TaskStackBuilder taskStackBuilder =
+                TaskStackBuilder.create(this).addParentStack(HomeActivity.class).addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             builder.setContentIntent(resultPendingIntent);
 
             NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);

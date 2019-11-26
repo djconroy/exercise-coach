@@ -30,17 +30,15 @@ public class ExerciseProgramProvider extends ContentProvider {
     private static final String sWeekSelection = PrescribedExercisesEntry.COLUMN_WEEK + " = ? ";
 
     // week = ? AND day = ?
-    private static final String sWeekAndDaySelection = PrescribedExercisesEntry.COLUMN_WEEK +
-            " = ? AND " + PrescribedExercisesEntry.COLUMN_DAY + " = ? ";
+    private static final String sWeekAndDaySelection =
+        PrescribedExercisesEntry.COLUMN_WEEK + " = ? AND " + PrescribedExercisesEntry.COLUMN_DAY + " = ? ";
 
     // date = ?
     private static final String sDateSelection = ExerciseCalendarEntry.COLUMN_DATE + " = ? ";
 
     // date = ? AND prescribed = ? AND session = ?
-    private static final String sDateAndPrescribedAndSessionSelection =
-            ExerciseCalendarEntry.COLUMN_DATE + " = ? AND " +
-                    ExerciseCalendarEntry.COLUMN_PRESCRIBED + " = ? AND " +
-                    ExerciseCalendarEntry.COLUMN_SESSION + " = ? ";
+    private static final String sDateAndPrescribedAndSessionSelection = ExerciseCalendarEntry.COLUMN_DATE + " = ? AND "
+        + ExerciseCalendarEntry.COLUMN_PRESCRIBED + " = ? AND " + ExerciseCalendarEntry.COLUMN_SESSION + " = ? ";
 
     static UriMatcher buildUriMatcher() {
         // All paths added to the UriMatcher have a corresponding code to return when a match is
@@ -49,15 +47,11 @@ public class ExerciseProgramProvider extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         matcher.addURI(CONTENT_AUTHORITY, PATH_PRESCRIBED_EXERCISES, PRESCRIBED_EXERCISES);
-        matcher.addURI(CONTENT_AUTHORITY, PATH_PRESCRIBED_EXERCISES + "/#",
-                PRESCRIBED_EXERCISES_WITH_WEEK);
-        matcher.addURI(CONTENT_AUTHORITY, PATH_PRESCRIBED_EXERCISES + "/#/#",
-                PRESCRIBED_EXERCISES_WITH_WEEK_AND_DAY);
+        matcher.addURI(CONTENT_AUTHORITY, PATH_PRESCRIBED_EXERCISES + "/#", PRESCRIBED_EXERCISES_WITH_WEEK);
+        matcher.addURI(CONTENT_AUTHORITY, PATH_PRESCRIBED_EXERCISES + "/#/#", PRESCRIBED_EXERCISES_WITH_WEEK_AND_DAY);
         matcher.addURI(CONTENT_AUTHORITY, PATH_EXERCISE_CALENDAR, EXERCISE_CALENDAR);
-        matcher.addURI(CONTENT_AUTHORITY, PATH_EXERCISE_CALENDAR + "/#",
-                EXERCISE_CALENDAR_WITH_DATE);
-        matcher.addURI(CONTENT_AUTHORITY, PATH_EXERCISE_CALENDAR + "/#/#/#",
-                EXERCISE_CALENDAR_WITH_DATE_AND_PRESCRIBED_AND_SESSION);
+        matcher.addURI(CONTENT_AUTHORITY, PATH_EXERCISE_CALENDAR + "/#", EXERCISE_CALENDAR_WITH_DATE);
+        matcher.addURI(CONTENT_AUTHORITY, PATH_EXERCISE_CALENDAR + "/#/#/#", EXERCISE_CALENDAR_WITH_DATE_AND_PRESCRIBED_AND_SESSION);
         return matcher;
     }
 
@@ -74,98 +68,85 @@ public class ExerciseProgramProvider extends ContentProvider {
                         String selection,
                         String[] selectionArgs,
                         String sortOrder) {
-        // Given a URI, this switch statement will determine what kind of request it is, and
-        // query the database accordingly.
+        // Given a URI, this switch statement will determine what kind of request it is, and query the database accordingly.
         Cursor returnCursor;
         String[] newSelectionArgs;
         int week;
         int day;
         switch (sUriMatcher.match(uri)) {
             case PRESCRIBED_EXERCISES:
-                returnCursor = mOpenHelper.getReadableDatabase().query(
-                        PrescribedExercisesEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
+                returnCursor = mOpenHelper.getReadableDatabase().query(PrescribedExercisesEntry.TABLE_NAME,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    sortOrder
                 );
                 break;
             case PRESCRIBED_EXERCISES_WITH_WEEK:
                 week = PrescribedExercisesEntry.getWeekFromUri(uri);
-                returnCursor = mOpenHelper.getReadableDatabase().query(
-                        PrescribedExercisesEntry.TABLE_NAME,
-                        projection,
-                        sWeekSelection,
-                        new String[]{Integer.toString(week)},
-                        null,
-                        null,
-                        sortOrder
+                returnCursor = mOpenHelper.getReadableDatabase().query(PrescribedExercisesEntry.TABLE_NAME,
+                    projection,
+                    sWeekSelection,
+                    new String[]{Integer.toString(week)},
+                    null,
+                    null,
+                    sortOrder
                 );
                 break;
             case PRESCRIBED_EXERCISES_WITH_WEEK_AND_DAY:
                 week = PrescribedExercisesEntry.getWeekFromUri(uri);
                 day = PrescribedExercisesEntry.getDayFromUri(uri);
-                returnCursor = mOpenHelper.getReadableDatabase().query(
-                        PrescribedExercisesEntry.TABLE_NAME,
-                        projection,
-                        sWeekAndDaySelection,
-                        new String[]{Integer.toString(week), Integer.toString(day)},
-                        null,
-                        null,
-                        sortOrder
+                returnCursor = mOpenHelper.getReadableDatabase().query(PrescribedExercisesEntry.TABLE_NAME,
+                    projection,
+                    sWeekAndDaySelection,
+                    new String[]{Integer.toString(week), Integer.toString(day)},
+                    null,
+                    null,
+                    sortOrder
                 );
                 break;
             case EXERCISE_CALENDAR:
-                returnCursor = mOpenHelper.getReadableDatabase().query(
-                        ExerciseCalendarEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
+                returnCursor = mOpenHelper.getReadableDatabase().query(ExerciseCalendarEntry.TABLE_NAME,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    sortOrder
                 );
                 break;
             case EXERCISE_CALENDAR_WITH_DATE:
-                newSelectionArgs =
-                        new String[1 + (selectionArgs == null ? 0 : selectionArgs.length)];
+                newSelectionArgs = new String[1 + (selectionArgs == null ? 0 : selectionArgs.length)];
                 if (selectionArgs != null) {
                     System.arraycopy(selectionArgs, 0, newSelectionArgs, 1, selectionArgs.length);
                 }
                 newSelectionArgs[0] = Long.toString(ExerciseCalendarEntry.getDateFromUri(uri));
-                returnCursor = mOpenHelper.getReadableDatabase().query(
-                        ExerciseCalendarEntry.TABLE_NAME,
-                        projection,
-                        sDateSelection +
-                                (!TextUtils.isEmpty(selection) ? "AND (" + selection + ')' : ""),
-                        newSelectionArgs,
-                        null,
-                        null,
-                        sortOrder
+                returnCursor = mOpenHelper.getReadableDatabase().query(ExerciseCalendarEntry.TABLE_NAME,
+                    projection,
+                    sDateSelection + (!TextUtils.isEmpty(selection) ? "AND (" + selection + ')' : ""),
+                    newSelectionArgs,
+                    null,
+                    null,
+                    sortOrder
                 );
                 break;
             case EXERCISE_CALENDAR_WITH_DATE_AND_PRESCRIBED_AND_SESSION:
-                newSelectionArgs =
-                        new String[3 + (selectionArgs == null ? 0 : selectionArgs.length)];
+                newSelectionArgs = new String[3 + (selectionArgs == null ? 0 : selectionArgs.length)];
                 if (selectionArgs != null) {
                     System.arraycopy(selectionArgs, 0, newSelectionArgs, 3, selectionArgs.length);
                 }
                 newSelectionArgs[0] = Long.toString(ExerciseCalendarEntry.getDateFromUri(uri));
-                newSelectionArgs[1] =
-                        Integer.toString(ExerciseCalendarEntry.getPrescribedFromUri(uri));
-                newSelectionArgs[2] =
-                        Integer.toString(ExerciseCalendarEntry.getSessionFromUri(uri));
-                returnCursor = mOpenHelper.getReadableDatabase().query(
-                        ExerciseCalendarEntry.TABLE_NAME,
-                        projection,
-                        sDateAndPrescribedAndSessionSelection +
-                                (!TextUtils.isEmpty(selection) ? "AND (" + selection + ')' : ""),
-                        newSelectionArgs,
-                        null,
-                        null,
-                        sortOrder
+                newSelectionArgs[1] = Integer.toString(ExerciseCalendarEntry.getPrescribedFromUri(uri));
+                newSelectionArgs[2] = Integer.toString(ExerciseCalendarEntry.getSessionFromUri(uri));
+                returnCursor = mOpenHelper.getReadableDatabase().query(ExerciseCalendarEntry.TABLE_NAME,
+                    projection,
+                    sDateAndPrescribedAndSessionSelection + (!TextUtils.isEmpty(selection) ? "AND (" + selection + ')' : ""),
+                    newSelectionArgs,
+                    null,
+                    null,
+                    sortOrder
                 );
                 break;
             default:
@@ -211,8 +192,7 @@ public class ExerciseProgramProvider extends ContentProvider {
 
         switch (match) {
             case PRESCRIBED_EXERCISES: {
-                long _id = sqLiteDatabase.insert(
-                        PrescribedExercisesEntry.TABLE_NAME, null, contentValues);
+                long _id = sqLiteDatabase.insert(PrescribedExercisesEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
                     returnUri = PrescribedExercisesEntry.buildPrescribedExerciseUri(_id);
                 } else {
@@ -221,8 +201,7 @@ public class ExerciseProgramProvider extends ContentProvider {
                 break;
             }
             case EXERCISE_CALENDAR: {
-                long _id = sqLiteDatabase.insert(
-                        ExerciseCalendarEntry.TABLE_NAME, null, contentValues);
+                long _id = sqLiteDatabase.insert(ExerciseCalendarEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
                     returnUri = ExerciseCalendarEntry.buildExerciseSessionUri(_id);
                 } else {
@@ -231,8 +210,7 @@ public class ExerciseProgramProvider extends ContentProvider {
                 break;
             }
             case EXERCISE_CALENDAR_WITH_DATE_AND_PRESCRIBED_AND_SESSION: {
-                long _id = sqLiteDatabase.insert(
-                        ExerciseCalendarEntry.TABLE_NAME, null, contentValues);
+                long _id = sqLiteDatabase.insert(ExerciseCalendarEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
                     returnUri = ExerciseCalendarEntry.buildExerciseSessionUri(_id);
                 } else {
@@ -265,12 +243,10 @@ public class ExerciseProgramProvider extends ContentProvider {
         }
         switch (match) {
             case PRESCRIBED_EXERCISES:
-                rowsDeleted = sqLiteDatabase.delete(
-                        PrescribedExercisesEntry.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = sqLiteDatabase.delete(PrescribedExercisesEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case EXERCISE_CALENDAR:
-                rowsDeleted = sqLiteDatabase.delete(
-                        ExerciseCalendarEntry.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = sqLiteDatabase.delete(ExerciseCalendarEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -292,30 +268,23 @@ public class ExerciseProgramProvider extends ContentProvider {
 
         switch (match) {
             case PRESCRIBED_EXERCISES:
-                rowsUpdated = sqLiteDatabase.update(PrescribedExercisesEntry.TABLE_NAME,
-                        contentValues, selection, selectionArgs);
+                rowsUpdated = sqLiteDatabase.update(PrescribedExercisesEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case EXERCISE_CALENDAR:
-                rowsUpdated = sqLiteDatabase.update(ExerciseCalendarEntry.TABLE_NAME,
-                        contentValues, selection, selectionArgs);
+                rowsUpdated = sqLiteDatabase.update(ExerciseCalendarEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case EXERCISE_CALENDAR_WITH_DATE_AND_PRESCRIBED_AND_SESSION:
-                String[] newSelectionArgs =
-                        new String[3 + (selectionArgs == null ? 0 : selectionArgs.length)];
+                String[] newSelectionArgs = new String[3 + (selectionArgs == null ? 0 : selectionArgs.length)];
                 if (selectionArgs != null) {
                     System.arraycopy(selectionArgs, 0, newSelectionArgs, 3, selectionArgs.length);
                 }
                 newSelectionArgs[0] = Long.toString(ExerciseCalendarEntry.getDateFromUri(uri));
-                newSelectionArgs[1] =
-                        Integer.toString(ExerciseCalendarEntry.getPrescribedFromUri(uri));
-                newSelectionArgs[2] =
-                        Integer.toString(ExerciseCalendarEntry.getSessionFromUri(uri));
-                rowsUpdated = sqLiteDatabase.update(
-                        ExerciseCalendarEntry.TABLE_NAME,
-                        contentValues,
-                        sDateAndPrescribedAndSessionSelection +
-                                (!TextUtils.isEmpty(selection) ? "AND (" + selection + ')' : ""),
-                        newSelectionArgs
+                newSelectionArgs[1] = Integer.toString(ExerciseCalendarEntry.getPrescribedFromUri(uri));
+                newSelectionArgs[2] = Integer.toString(ExerciseCalendarEntry.getSessionFromUri(uri));
+                rowsUpdated = sqLiteDatabase.update(ExerciseCalendarEntry.TABLE_NAME,
+                    contentValues,
+                    sDateAndPrescribedAndSessionSelection + (!TextUtils.isEmpty(selection) ? "AND (" + selection + ')' : ""),
+                    newSelectionArgs
                 );
                 break;
             default:
@@ -337,8 +306,7 @@ public class ExerciseProgramProvider extends ContentProvider {
                 sqLiteDatabase.beginTransaction();
                 try {
                     for (ContentValues value : contentValuesArray) {
-                        long _id = sqLiteDatabase.insert(
-                                PrescribedExercisesEntry.TABLE_NAME, null, value);
+                        long _id = sqLiteDatabase.insert(PrescribedExercisesEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }
@@ -353,8 +321,7 @@ public class ExerciseProgramProvider extends ContentProvider {
                 sqLiteDatabase.beginTransaction();
                 try {
                     for (ContentValues value : contentValuesArray) {
-                        long _id = sqLiteDatabase.insert(
-                                ExerciseCalendarEntry.TABLE_NAME, null, value);
+                        long _id = sqLiteDatabase.insert(ExerciseCalendarEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

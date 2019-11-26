@@ -31,8 +31,8 @@ import java.util.Calendar;
 import static org.insightcentre.coach.data.ExerciseProgramContract.ExerciseCalendarEntry.*;
 
 public class ExerciseSessionActivity extends AppCompatActivity
-        implements DiscardChangesDialogFragment.DiscardChangesDialogListener,
-        RPEDialogFragment.RPEDialogListener {
+                                     implements DiscardChangesDialogFragment.DiscardChangesDialogListener,
+                                                RPEDialogFragment.RPEDialogListener {
 
     private static final String[] SESSION_COLUMNS = {
             COLUMN_DATE,
@@ -91,6 +91,7 @@ public class ExerciseSessionActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_exercise_session);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -98,12 +99,11 @@ public class ExerciseSessionActivity extends AppCompatActivity
         getSupportActionBar().setTitle(R.string.exercise_session);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
-        getSupportActionBar()
-                .setHomeActionContentDescription(R.string.go_back_to_the_previous_screen);
+        getSupportActionBar().setHomeActionContentDescription(R.string.go_back_to_the_previous_screen);
 
         mTypeSpinner = (Spinner) findViewById(R.id.type_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.exercise_types, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter =
+            ArrayAdapter.createFromResource(this, R.array.exercise_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mTypeSpinner.setAdapter(adapter);
 
@@ -149,8 +149,7 @@ public class ExerciseSessionActivity extends AppCompatActivity
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0 && Integer.parseInt(s.toString()) >= 60) {
                     mSecondsInputLayout.setErrorEnabled(true);
-                    mSecondsInputLayout
-                            .setError(getString(R.string.seconds_overflow_error_message));
+                    mSecondsInputLayout.setError(getString(R.string.seconds_overflow_error_message));
                 } else {
                     mSecondsInputLayout.setErrorEnabled(false);
                 }
@@ -166,10 +165,10 @@ public class ExerciseSessionActivity extends AppCompatActivity
                 today.setTimeZone(Utility.timeZoneAtHome());
                 Utility.setMidnight(today);
                 Utility.adjustForDST(this, today);
+
                 mDate = getIntent().getLongExtra(EXTRA_DATE, today.getTimeInMillis());
                 mSession = getIntent().getIntExtra(EXTRA_NEXT_EXTRA_SESSION, 1);
-                SharedPreferences levelSharedPrefs = getSharedPreferences(
-                        getString(R.string.level_key), Context.MODE_PRIVATE);
+                SharedPreferences levelSharedPrefs = getSharedPreferences(getString(R.string.level_key), Context.MODE_PRIVATE);
                 mLevel = levelSharedPrefs.getInt(getString(R.string.current_level), 1);
                 mTargetLength = 0;
                 mActualLength = 0;
@@ -250,21 +249,20 @@ public class ExerciseSessionActivity extends AppCompatActivity
                     mSecondsInputLayout.setErrorEnabled(true);
                     mSecondsInputLayout.setError(getString(R.string.seconds_is_required));
                 }
-                if (mMinutesInputLayout.getError() == null &&
-                        mSecondsInputLayout.getError() == null) {
+                if (mMinutesInputLayout.getError() == null && mSecondsInputLayout.getError() == null) {
                     // Don't allow the user to record extra sessions of length 0
-                    if (mPrescribed == SESSION_NOT_PRESCRIBED && mType == TYPE_NOT_RECORDED &&
-                            Integer.parseInt(mMinutesEditText.getText().toString()) == 0 &&
-                            Integer.parseInt(mSecondsEditText.getText().toString()) == 0) {
+                    if (mPrescribed == SESSION_NOT_PRESCRIBED && mType == TYPE_NOT_RECORDED
+                            && Integer.parseInt(mMinutesEditText.getText().toString()) == 0
+                            && Integer.parseInt(mSecondsEditText.getText().toString()) == 0) {
                         return true;
                     }
+
                     // Save session data
                     Uri contentUri = getIntent().getData();
                     boolean newExtraSession;
 
                     if (mPrescribed == SESSION_NOT_PRESCRIBED && mType == TYPE_NOT_RECORDED) {
-                        contentUri = buildExerciseCalendarDateWithPrescribedAndSession(
-                                mDate, mPrescribed, mSession);
+                        contentUri = buildExerciseCalendarDateWithPrescribedAndSession(mDate, mPrescribed, mSession);
                         newExtraSession = true;
                     } else {
                         newExtraSession = false;
@@ -276,15 +274,13 @@ public class ExerciseSessionActivity extends AppCompatActivity
                     contentValues.put(COLUMN_LEVEL, mLevel);
                     contentValues.put(COLUMN_TARGET_LENGTH, mTargetLength);
 
-                    mActualLength = Integer.parseInt(mSecondsEditText.getText().toString()) +
-                            60 * Integer.parseInt(mMinutesEditText.getText().toString());
+                    mActualLength = Integer.parseInt(mSecondsEditText.getText().toString())
+                                    + 60 * Integer.parseInt(mMinutesEditText.getText().toString());
                     contentValues.put(COLUMN_ACTUAL_LENGTH, mActualLength);
                     contentValues.put(COLUMN_TARGET_RPE, mTargetRPE);
-                    contentValues.put(COLUMN_ACTUAL_RPE,
-                            Integer.valueOf(mRPETextView.getText().toString()));
+                    contentValues.put(COLUMN_ACTUAL_RPE, Integer.valueOf(mRPETextView.getText().toString()));
 
-                    // This code assumes that the integer codes for exercise types correspond to
-                    // their positions in the spinner
+                    // This code assumes that the integer codes for exercise types correspond to their positions in the spinner
                     contentValues.put(COLUMN_TYPE, mTypeSpinner.getSelectedItemPosition());
 
                     if (mPrescribed == SESSION_PRESCRIBED) {
@@ -320,8 +316,7 @@ public class ExerciseSessionActivity extends AppCompatActivity
     public void onCancelChoosingRPE() {}
 
     private void showRPEDialog() {
-        DialogFragment dialog = RPEDialogFragment
-                .newInstance(Integer.parseInt(mRPETextView.getText().toString()));
+        DialogFragment dialog = RPEDialogFragment.newInstance(Integer.parseInt(mRPETextView.getText().toString()));
         dialog.show(getSupportFragmentManager(), "rpe");
     }
 
@@ -335,8 +330,7 @@ public class ExerciseSessionActivity extends AppCompatActivity
 
     private boolean changesWereMade() {
         if (mType != TYPE_NOT_RECORDED) {
-            // This code assumes that the integer codes for exercise types correspond to their
-            // positions in the spinner
+            // This code assumes that the integer codes for exercise types correspond to their positions in the spinner
             if (mTypeSpinner.getSelectedItemPosition() != mType) {
                 return true;
             }
@@ -353,19 +347,17 @@ public class ExerciseSessionActivity extends AppCompatActivity
         }
 
         if (mType != TYPE_NOT_RECORDED) {
-            if (mMinutesEditText.length() == 0 && mSecondsEditText.length() > 0 &&
-                    mActualLength % 60 !=
-                            Integer.parseInt(mSecondsEditText.getText().toString())) {
+            if (mMinutesEditText.length() == 0 && mSecondsEditText.length() > 0
+                    && mActualLength % 60 != Integer.parseInt(mSecondsEditText.getText().toString())) {
                 return true;
             }
-            if (mMinutesEditText.length() > 0 && mSecondsEditText.length() == 0 &&
-                    mActualLength / 60 !=
-                            Integer.parseInt(mMinutesEditText.getText().toString())) {
+            if (mMinutesEditText.length() > 0 && mSecondsEditText.length() == 0
+                    && mActualLength / 60 != Integer.parseInt(mMinutesEditText.getText().toString())) {
                 return true;
             }
             if (mMinutesEditText.length() > 0 && mSecondsEditText.length() > 0 &&
-                    mActualLength != Integer.parseInt(mMinutesEditText.getText().toString()) * 60 +
-                            Integer.parseInt(mSecondsEditText.getText().toString())) {
+                    mActualLength != 60 * Integer.parseInt(mMinutesEditText.getText().toString())
+                                     + Integer.parseInt(mSecondsEditText.getText().toString())) {
                 return true;
             }
         } else {
@@ -383,16 +375,13 @@ public class ExerciseSessionActivity extends AppCompatActivity
 
     private void prepareUI() {
         if (mPrescribed == SESSION_PRESCRIBED) {
-            ((TextView) findViewById(R.id.session)).setText(
-                    Utility.getFriendlyDayString(ExerciseSessionActivity.this, mDate) +
-                            "     " + ExerciseSessionActivity.this
-                            .getString(R.string.session, mSession));
+            ((TextView) findViewById(R.id.session)).setText(Utility.getFriendlyDayString(ExerciseSessionActivity.this, mDate)
+                + "     " + ExerciseSessionActivity.this.getString(R.string.session, mSession));
 
             SpannableStringBuilder targetTime = new SpannableStringBuilder();
             targetTime.append(getString(R.string.target_time));
-            targetTime.setSpan(new ForegroundColorSpan(ContextCompat.getColor(
-                    ExerciseSessionActivity.this, R.color.colorPrimaryDark)),
-                    0, targetTime.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            targetTime.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ExerciseSessionActivity.this, R.color.colorPrimaryDark)),
+                               0, targetTime.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             targetTime.append(' ');
             targetTime.append(' ');
             targetTime.append(' ');
@@ -408,9 +397,8 @@ public class ExerciseSessionActivity extends AppCompatActivity
 
             SpannableStringBuilder targetRPE = new SpannableStringBuilder();
             targetRPE.append(getString(R.string.target_rpe));
-            targetRPE.setSpan(new ForegroundColorSpan(ContextCompat.getColor(
-                    ExerciseSessionActivity.this, R.color.colorPrimaryDark)),
-                    0, targetRPE.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            targetRPE.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ExerciseSessionActivity.this, R.color.colorPrimaryDark)),
+                              0, targetRPE.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             targetRPE.append(' ');
             targetRPE.append(' ');
             targetRPE.append(' ');
@@ -418,10 +406,8 @@ public class ExerciseSessionActivity extends AppCompatActivity
 
             ((TextView) findViewById(R.id.target_rpe)).setText(targetRPE);
         } else {
-            ((TextView) findViewById(R.id.session)).setText(
-                    Utility.getFriendlyDayString(ExerciseSessionActivity.this, mDate) +
-                            "     " + ExerciseSessionActivity.this
-                            .getString(R.string.extra_session, mSession));
+            ((TextView) findViewById(R.id.session)).setText(Utility.getFriendlyDayString(ExerciseSessionActivity.this, mDate)
+                + "     " + ExerciseSessionActivity.this.getString(R.string.extra_session, mSession));
 
             findViewById(R.id.target_time).setVisibility(View.GONE);
             findViewById(R.id.target_rpe).setVisibility(View.GONE);

@@ -63,10 +63,10 @@ public class EveningNotificationService extends IntentService {
 
         if (sendReminder) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle(getString(R.string.reminder))
-                    .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.big_view_reminder_message)));
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(getString(R.string.reminder))
+                .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.big_view_reminder_message)));
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                 builder.setContentText(getString(R.string.normal_view_reminder_message));

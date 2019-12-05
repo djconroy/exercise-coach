@@ -75,12 +75,12 @@ public class HomeActivity extends AppCompatActivity
 
         View emptyView = findViewById(R.id.recyclerview_exercises_empty);
         mExercisesAdapter = new ExercisesAdapter(this,
-                new ExercisesAdapter.OnClickHandler() {
-                    @Override
-                    public void onClick(long date, int prescribed, int session) {
-                        onItemSelected(buildExerciseCalendarDateWithPrescribedAndSession(date, prescribed, session));
-                    }
-                }, emptyView);
+            new ExercisesAdapter.OnClickHandler() {
+                @Override
+                public void onClick(long date, int prescribed, int session) {
+                    onItemSelected(buildExerciseCalendarDateWithPrescribedAndSession(date, prescribed, session));
+                }
+            }, emptyView);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview_exercises);
         recyclerView.setAdapter(mExercisesAdapter);
@@ -113,7 +113,7 @@ public class HomeActivity extends AppCompatActivity
 
                 if (cursor.getLong(COL_EXERCISES_DATE) >= today.getTimeInMillis()) {
                     if (cursor.getInt(COL_EXERCISES_PRESCRIBED) == SESSION_NOT_PRESCRIBED) {
-                        nextExtraSession = 1 + cursor.getInt(COL_EXERCISES_SESSION);
+                        nextExtraSession = cursor.getInt(COL_EXERCISES_SESSION) + 1;
                     } else {
                         if (cursor.getLong(COL_EXERCISES_DATE) > today.getTimeInMillis()) {
                             while (cursor.moveToPrevious() && cursor.getLong(COL_EXERCISES_DATE) >= today.getTimeInMillis()) {

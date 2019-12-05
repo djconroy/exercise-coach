@@ -26,7 +26,7 @@ public class DeviceBootAndTimeZoneChangeReceiver extends BroadcastReceiver {
             Utility.adjustForDST(context, today);
 
             SharedPreferences datesSharedPrefs =
-			    context.getSharedPreferences(context.getString(R.string.dates_key), Context.MODE_PRIVATE);
+                context.getSharedPreferences(context.getString(R.string.dates_key), Context.MODE_PRIVATE);
             long startDate = datesSharedPrefs.getLong(context.getString(R.string.start_date), today.getTimeInMillis());
             long endDate = datesSharedPrefs.getLong(context.getString(R.string.end_date), today.getTimeInMillis());
 

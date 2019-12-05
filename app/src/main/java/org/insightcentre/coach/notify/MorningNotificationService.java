@@ -109,9 +109,9 @@ public class MorningNotificationService extends IntentService {
 
         // Start building notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(getString(R.string.exercise_prescription))
-                .setDefaults(Notification.DEFAULT_ALL); // requires VIBRATE permission
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(getString(R.string.exercise_prescription))
+            .setDefaults(Notification.DEFAULT_ALL); // requires VIBRATE permission
 
         // Build list of prescribed exercises
         StringBuilder stringBuilder = new StringBuilder();

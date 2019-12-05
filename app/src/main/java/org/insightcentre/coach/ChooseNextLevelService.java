@@ -140,9 +140,9 @@ public class ChooseNextLevelService extends IntentService {
         }
 
         Intent scheduleExercisesIntent = new Intent(this, ScheduleExercisesService.class)
-                .putExtra(ScheduleExercisesService.EXTRA_NEXT_LEVEL, nextLevel)
-                .putExtra(ScheduleExercisesService.EXTRA_START_DATE, today.getTimeInMillis())
-                .putExtra(ScheduleExercisesService.EXTRA_CHOOSE_LEVEL_INTENT, intent);
+            .putExtra(ScheduleExercisesService.EXTRA_NEXT_LEVEL, nextLevel)
+            .putExtra(ScheduleExercisesService.EXTRA_START_DATE, today.getTimeInMillis())
+            .putExtra(ScheduleExercisesService.EXTRA_CHOOSE_LEVEL_INTENT, intent);
         startService(scheduleExercisesIntent);
     }
 }

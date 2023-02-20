@@ -3,6 +3,8 @@ Insight Coach is an Android app I created as an intern at the Insight Centre for
 
 Insight Coach implements an adaptive coaching system for use in an exercise program for people with diabetes. The app allows users to record their exercise activity. Every week the user progresses to the next level of the exercise program if they have completed enough prescribed exercise sessions at the current level. This is accompanied by a notification which either congratulates the user for their progress or encourages them if they have not progressed. The app also schedules and sends notifications and reminders about the user's prescribed exercise sessions. These notifications are sent at the same times of day regardless of timezone changes or transitions in and out of daylight saving time.
 
+I used the [TimesSquare Android widget](https://github.com/square/android-times-square) for picking a single date from a calendar view.
+
 ### Screenshots
 
 <img src="screenshots/home.png" width="35%" hspace="40" /><img src="screenshots/session.png" width="35%" hspace="40" />

@@ -5,6 +5,8 @@ Insight Coach implements an adaptive coaching system for use in an exercise prog
 
 I used the [TimesSquare Android widget](https://github.com/square/android-times-square) for picking a single date from a calendar view.
 
+Note: RPE stands for Rating of Perceived Exertion
+
 ### Screenshots
 
 <img src="screenshots/home.png" width="35%" hspace="40" /><img src="screenshots/session.png" width="35%" hspace="40" />
